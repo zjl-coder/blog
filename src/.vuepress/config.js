@@ -3,4 +3,5 @@ module.exports = {
   title: '风时雨',
   description: 'VuePress 站点',
   base: '/blog/',
+  dest: 'docs'
 }
