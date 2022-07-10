@@ -1,5 +1,9 @@
+const path = require('path');
 const { defaultTheme } = require('@vuepress/theme-default');
 const { searchPlugin } = require('@vuepress/plugin-search');
+const { backToTopPlugin } = require('@vuepress/plugin-back-to-top');
+const { externalLinkIconPlugin } = require('@vuepress/plugin-external-link-icon');
+const { registerComponentsPlugin } = require('@vuepress/plugin-register-components');
 
 module.exports = {
   lang: 'zh-CN',
@@ -24,7 +28,7 @@ module.exports = {
             link: '/front/js',
             children: [
               {
-                text: 'console 颜色',
+                text: 'console.log 打印颜色',
                 link: '/front/js/console-log.md',
               }
             ]
@@ -49,5 +53,22 @@ module.exports = {
       },
       maxSuggestions: 100,
     }),
+    backToTopPlugin(),
+    externalLinkIconPlugin({
+      locales: {
+        '/': {
+          openInNewWindow: 'open in new window',
+        },
+        '/zh/': {
+          openInNewWindow: '在新窗口打开',
+        },
+      },
+      externalLinkIcon: true,
+    }),
+    registerComponentsPlugin({
+      componentsDir: path.resolve(__dirname, './components'),
+    }),
   ],
 }
+
+// __dirname  blog/src/.vuepress
