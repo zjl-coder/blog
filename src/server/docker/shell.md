@@ -120,7 +120,7 @@ cp ./${frontName}/dist/* ./${nodeName}/public
 
 echo "mv ./dockerrun.sh ./${nodeName}/dockerrun.sh"
 # 更新dockerrun.sh
-mv ./dockerrun.sh ./${nodeName}/dockerrun.sh
+cp ./dockerrun.sh ./${nodeName}/dockerrun.sh
 
 echo "进入node项目根目录，构建镜像"
 
