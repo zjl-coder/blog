@@ -98,6 +98,16 @@ module.exports = {
                 link: '/server/system/process-thread.md',
               }
             ]
+          },
+          {
+            text: 'docker',
+            link: '/server/docker/',
+            children: [
+              {
+                text: 'docker shell 自动化脚本',
+                link: '/server/docker/shell.md',
+              }
+            ]
           }
         ]
       },
