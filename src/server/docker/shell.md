@@ -16,13 +16,13 @@
 #!/bin/bash
 
 # 镜像名称
-imagesName="csighub.tencentyun.com/kinronzhang/blockchain-oms"
+imagesName="blockchain-oms"
 # 镜像版本
 DOCKER_VERSION="test"
 # 容器名称
 containerName="bcotest"
 # 前端项目名称
-frontName="tea-app-blockchain-oms-front"
+frontName="blockchain-oms-front"
 # 前端项目分支
 branchFront="dev"
 # 后端项目名称
