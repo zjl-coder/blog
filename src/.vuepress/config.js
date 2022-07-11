@@ -60,12 +60,16 @@ module.exports = {
             ]
           },
           {
-            text: '性能',
-            link: '/front/performance',
+            text: '工程',
+            link: '/front/engineering',
             children: [
               {
+                text: '前端工程化',
+                link: '/front/engineering/engineering.md',
+              },
+              {
                 text: '性能指标',
-                link: '/front/performance/index.md',
+                link: '/front/engineering/performance.md',
               }
             ]
           },
@@ -82,6 +86,32 @@ module.exports = {
               {
                 text: '前端nginx知识',
                 link: '/server/nginx/nginx.md',
+              }
+            ]
+          },
+          {
+            text: '系统',
+            link: '/server/system/',
+            children: [
+              {
+                text: '进程和线程',
+                link: '/server/system/process-thread.md',
+              }
+            ]
+          }
+        ]
+      },
+      {
+        text: '网络',
+        link: '/network/',
+        children: [
+          {
+            text: 'tcp',
+            link: '/network/tcp',
+            children: [
+              {
+                text: 'HTTP长连接、短连接和websocket',
+                link: '/network/tcp/connection.md',
               }
             ]
           }
