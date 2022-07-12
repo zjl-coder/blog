@@ -86,6 +86,28 @@ module.exports = {
         link: '/server/',
         children: [
           {
+            text: 'node',
+            link: '/server/node/',
+            children: [
+              {
+                text: '理解node buffer',
+                link: '/server/node/buffer.md',
+              },
+              {
+                text: '理解node http',
+                link: '/server/node/http.md',
+              },
+              {
+                text: '理解node router路由中间件的原理',
+                link: '/server/node/router.md',
+              },
+              {
+                text: '理解node stream流',
+                link: '/server/node/stream.md',
+              }
+            ]
+          },
+          {
             text: 'nginx',
             link: '/server/nginx/',
             children: [
