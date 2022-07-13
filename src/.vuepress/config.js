@@ -12,6 +12,7 @@ module.exports = {
   base: '/blog/',
   dest: 'docs',
   theme: defaultTheme({
+    contributors: false,
     navbar:[
       {
         text: '设计模式',
