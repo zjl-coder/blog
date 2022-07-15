@@ -4,6 +4,8 @@ const { searchPlugin } = require('@vuepress/plugin-search');
 const { backToTopPlugin } = require('@vuepress/plugin-back-to-top');
 const { externalLinkIconPlugin } = require('@vuepress/plugin-external-link-icon');
 const { registerComponentsPlugin } = require('@vuepress/plugin-register-components');
+const { mediumZoomPlugin } = require('@vuepress/plugin-medium-zoom');
+const { nprogressPlugin } = require('@vuepress/plugin-nprogress');
 
 module.exports = {
   lang: 'zh-CN',
@@ -189,6 +191,8 @@ module.exports = {
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, './components'),
     }),
+    mediumZoomPlugin({}),
+    nprogressPlugin(),
   ],
 }
 
