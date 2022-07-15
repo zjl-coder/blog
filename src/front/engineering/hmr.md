@@ -11,11 +11,11 @@ Hot Module Replacement（以下简称 HMR）
 
 ## 疑问
 1. 使用webpack HMR (即通常的npm run dev模式) 进行开发的过程中，bundle 文件或者几个 chunk 文件<Te d>没有在 dist 目录</Te>中找到，它们去哪呢？
-2. 通过查看 webpack-dev-server (作为本地静态资源服务器使用) 的 package.json 文件，我们知道其依赖于 webpack-dev-middleware 库，那么 webpack-dev-middleware 在 HMR 过程中扮演什么角色？
-3. 使用 HMR 的过程中，通过 Chrome 开发者工具我知道浏览器是通过 websocket 和 webpack-dev-server 进行通信的，但是 websocket 的 message 中并没有发现新模块代码。打包后的新模块又是通过什么方式发送到浏览器端的呢？为什么新的模块不通过 websocket 随消息一起发送到浏览器端呢？
-4. 浏览器拿到最新的模块代码，HMR 又是怎么将老的模块替换成新的模块，在替换的过程中怎样处理模块之间的依赖关系？
-5. es6 转化为es5 的 import 和 export 是怎么转化的。AMD ？
-6. 当模块的热替换过程中，如果替换模块失败，有什么回退机制吗？
+2. 通过查看 webpack-dev-server (作为本地静态资源服务器使用) 的 package.json 文件，我们知道其依赖于 webpack-dev-middleware 库，那么 webpack-dev-middleware 在 HMR 过程中扮演什么角色？(<Te d>webpack-dev-middleware 干嘛的</Te>)
+3. 使用 HMR 的过程中，通过 Chrome 开发者工具我知道浏览器是通过 websocket 和 webpack-dev-server 进行通信的，但是 websocket 的 message 中并没有发现新模块代码。打包后的新模块又是通过什么方式发送到浏览器端的呢？为什么新的模块不通过 websocket 随消息一起发送到浏览器端呢？(<Te d>浏览器是怎么拿到最新的模块代码的</Te>)
+4. 浏览器拿到最新的模块代码，HMR 又是怎么将老的模块替换成新的模块，在替换的过程中怎样处理模块之间的依赖关系？(<Te d>浏览器是怎么更新模块代码的</Te>)
+5. es6 转化为es5 的 import 和 export 是怎么转化的。[es6模块化代码转es5代码的模样](./es6toes5.md)
+6. 当模块的热替换过程中，如果替换模块失败，有什么<Te d>回退机制</Te>吗？
 
 ## 流程总结
 1. 当修改了一个或多个文件；

@@ -77,6 +77,10 @@ module.exports = {
                 link: '/front/engineering/hmr.md',
               },
               {
+                text: 'es6模块化代码转es5代码的模样',
+                link: '/front/engineering/es6toes5.md',
+              },
+              {
                 text: '前端工程化',
                 link: '/front/engineering/engineering.md',
               },
