@@ -191,8 +191,8 @@ module.exports = {
     registerComponentsPlugin({
       componentsDir: path.resolve(__dirname, './components'),
     }),
-    mediumZoomPlugin({}),
-    nprogressPlugin(),
+    // mediumZoomPlugin({}),
+    // nprogressPlugin(),
   ],
 }
 
