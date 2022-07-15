@@ -71,6 +71,10 @@ module.exports = {
             link: '/front/engineering',
             children: [
               {
+                text: 'Webpack热更新原理解析',
+                link: '/front/engineering/hmr.md',
+              },
+              {
                 text: '前端工程化',
                 link: '/front/engineering/engineering.md',
               },
