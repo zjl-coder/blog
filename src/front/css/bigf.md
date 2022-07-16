@@ -20,7 +20,7 @@ BFC(Block Formatting Contexts)直译为"块级格式化上下文"。Block Format
 - BFC可以阻止元素被浮动元素覆盖
 
 ## IFC
-IFC(Inline Formatting Contexts)直译为"内联格式化上下文"，IFC的line box（线框）高度由其包含行内元素中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)  
+IFC(Inline Formatting Contexts)直译为"内联格式化上下文"，IFC的line box（线框）高度由其包含行内元素(内联元素)中最高的实际高度计算而来（不受到竖直方向的padding/margin影响)  
 
 IFC中的line box一般左右都贴紧整个IFC，但是会因为float元素而扰乱。float元素会位于IFC与与line box之间，使得line box宽度缩短。  
 
@@ -37,9 +37,9 @@ IFC中时不可能有块级元素的，当插入块级元素时（如p中插入d
 - **垂直居中**：创建一个IFC，用其中一个元素撑开父元素的高度，然后设置其vertical-align:middle，其他行内元素则可以在此父元素下垂直居中。
 
 ### IFC的布局规则例如以下：
-1. ifc中的元素会在<Te d>一行</Te>中从左到右排列。
+1. ifc中的元素(内联元素)会在<Te d>一行</Te>中从左到右排列。
 
-2. 在一行上的所有元素(ifc元素)会在该区域形成一个<Te d>行框</Te>。
+2. 在一行上的所有元素(内联元素)会在该区域形成一个<Te d>行框</Te>。
 
 3. 行宽的高度为包含框的高度，高度为行框中<Te d>最高元素</Te>的高度。
 
