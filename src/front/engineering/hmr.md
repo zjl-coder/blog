@@ -18,11 +18,55 @@ Hot Module Replacement（以下简称 HMR）
 6. 当模块的热替换过程中，如果替换模块失败，有什么<Te d>回退机制</Te>吗？
 
 ## 流程总结
-1. 当修改了一个或多个文件；
-2. 文件系统接收更改并通知webpack；
-3. webpack重新编译构建一个或多个模块，并通知HMR服务器进行更新；
-4. HMR Server 使用webSocket通知HMR runtime 需要更新，HMR运行时通过HTTP请求更新jsonp；
-5. HMR运行时替换更新中的模块，如果确定这些模块无法更新，则触发整个页面刷新。
+1. webpack-dev-server 的 webpack-dev-middleware 通过 webpack 监听 文件代码，webpack-dev-server 监听静态资源文件；
+2. 静态资源文件变化，webpack-dev-server 通知浏览器进行刷新；
+3. 文件代码变化，webpack-dev-middleware 则通知webpack重新编译构建，并存以对象形式到内存中；
+4. webpack-dev-server 使用webSocket通知HMR runtime 需要热更新；
+5. HMR运行时通过ajsx请求一个 json，该 json 包含了所有要更新的模块的 hash 值；
+6. HMR运行时通过jsonp请求要更新的模块代码；
+7. HMR运行时替换更新中的模块，如果确定这些模块无法更新，则触发整个页面刷新。
 
-### 流程图如下
+## HMR 工作流程图解
+webpack 配合 webpack-dev-server 进行应用开发的模块热更新流程图
+- **底部红色**框内是服务端
+- **橙色框**是浏览器端
+- **绿色的方框**是 webpack 代码控制的区域
+- **蓝色方框**是 webpack-dev-server 代码控制的区域
+- **洋红色的方框**是文件系统，文件修改后的变化就发生在这
+- **青色的方框**是应用本身
 ![An image](./images/hmr.jpeg)  
+
+## HMR 工作流程图解详解
+1. **第一步**，在 webpack 的 watch 模式下，文件系统中某一个文件发生修改，webpack 监听到文件变化，根据配置文件对模块重新编译打包，并将打包后的代码通过简单的 JavaScript 对象保存在内存中。
+   > 1. webpack <Te d>监听</Te>文件
+   > 2. 文件被<Te d>修改</Te>，<Te d>通知</Te>webpack
+   > 3. webpack对模块(一模块一文件)进行<Te d>重新编译打包</Te>
+   > 4. 将打包后的代码以js对象<Te d>保存在内存</Te>中，格式：key: value，key是文件路径，value是闭包函数，函数内容是eval('编译后的模块代码')。
+2. **第二步**是 webpack-dev-server 和 webpack 之间的接口交互，而在这一步，主要是 dev-server 的中间件 webpack-dev-middleware 和 webpack 之间的交互，webpack-dev-middleware 调用 webpack 暴露的 API对代码变化进行监控，并且告诉 webpack，将代码打包到内存中。
+   > 1. webpack-dev-middleware 调用 webpack 暴露的 API对代码变化进行<Te d>监控</Te>
+   > 2. 代码变化时，告诉 webpack，将代码<Te d>打包到内存</Te>中
+
+   > *webpack 对文件进行监听和打包的指令发起于webpack-dev-middleware*
+3. **第三步**是 webpack-dev-server 对文件变化的一个监控，这一步<Te d>**不同于第一步**</Te>，并不是监控代码变化重新打包。当我们在配置文件中配置了devServer.watchContentBase 为 true 的时候，Server 会监听这些配置文件夹中<Te d>静态文件的变化</Te>(静态资源文件变化，devServer.contentBase 指定的文件夹)，变化后会通知浏览器端对应用进行 live reload。注意，这儿是浏览器刷新，和 HMR 是两个概念（不是热更新，是直接刷新浏览器）。
+   > 1. webpack-dev-server <Te d>监听</Te>静态资源文件变化
+   > 2. 有变化时<Te d>通知</Te>浏览器刷新 
+4. **第四步**也是 webpack-dev-server 代码的工作，该步骤主要是通过 sockjs（webpack-dev-server 的依赖）在浏览器端和服务端之间建立一个 websocket 长连接，将 webpack 编译打包的各个阶段的状态信息告知浏览器端，同时也包括第三步中 Server 监听静态文件变化的信息。浏览器端根据这些 socket 消息进行不同的操作。当然服务端传递的最主要信息还是新模块的 hash 值，后面的步骤根据这一 hash 值来进行模块热替换。
+   > 1. webpack-dev-server 与 浏览器之间<Te d>建立 websocket 长连接</Te>
+   > 2. webpack-dev-server <Te d>通知</Te>浏览器 webpack 编译打包的各个阶段的状态信息 和 server中静态资源文件的变化信息。服务端传递的最主要信息还是新模块的 hash 值
+   > 3. 浏览器将根据这些信息进行live reload 或者 hmr
+5. **第五步**webpack-dev-server/client 端并不能够请求更新的代码，也不会执行热更模块操作，而把这些工作又交回给了 webpack，webpack/hot/dev-server 的工作就是根据 webpack-dev-server/client 传给它的信息以及 dev-server 的配置决定是刷新浏览器呢还是进行模块热更新。当然如果仅仅是刷新浏览器，也就没有后面那些步骤了。
+   > webpack/hot/dev-server(在浏览器端的功能，注意与webpack-dev-server区分)根据信息信息<Te d>决定是live reload 还是 hmr</Te>
+
+   > 如果是live reload 则没有接下来的步骤了
+
+   > 如果是hmr 则往下继续走
+6. **第六、七、八、九 步骤** HotModuleReplacement.runtime 是客户端 HMR 的中枢，它接收到上一步传递给他的新模块的 hash 值，它通过 JsonpMainTemplate.runtime 向 server 端发送 Ajax 请求，服务端返回一个 json，该 json 包含了所有要更新的模块的 hash 值，获取到更新列表后，该模块再次通过 jsonp 请求，获取到最新的模块代码。
+   > 1. webpack/hot/dev-server <Te d>通知</Te> HotModuleReplacement.runtime 新模块的hash值
+   > 2. HotModuleReplacement.runtime 通过 JsonpMainTemplate.runtime 向 server 端发送 <Te d>Ajax 请求</Te>，服务端返回一个 json，该 json 包含了所有要更新的模块的 hash 值
+   > 3. HotModuleReplacement.runtime 通过<Te d> jsonp 请求</Te>，获取到最新的模块代码
+7. **第十步**是决定 HMR 成功与否的关键步骤，在该步骤中，HotModulePlugin 将会对<Te d>新旧模块</Te>进行对比，决定是否更新模块，在决定更新模块后，检查模块之间的依赖关系，更新模块的同时更新模块间的依赖引用。
+8. **最后一步**，当 HMR 失败后，<Te d>回退</Te>到 live reload 操作，也就是进行浏览器刷新来获取最新打包代码。
+
+### 补充解惑
+##### 1. 为什么 webpack 没有将文件直接打包到 output.path 目录(dist)下呢？文件又去了哪儿？
+webpack 将 bundle.js 文件打包到了内存中，不生成文件的原因就在于访问内存中的代码比访问文件系统中的文件更快，而且也减少了代码写入文件的开销，这一切都归功于memory-fs，memory-fs 是 webpack-dev-middleware 的一个依赖库，webpack-dev-middleware 将 webpack 原本的 outputFileSystem 替换成了MemoryFileSystem 实例，这样代码就将输出到内存中。
