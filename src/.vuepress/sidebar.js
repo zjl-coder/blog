@@ -19,6 +19,10 @@ const sidebar = [
             text: 'JavaScript中的Error类型',
             link: '/front/js/error.md',
           },
+          {
+            text: '获取URL get参数',
+            link: '/front/js/search-params.md',
+          },
         ]
       },
       {
