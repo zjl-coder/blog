@@ -75,6 +75,10 @@ const front = {
         {
           text: '性能指标',
           link: '/front/engineering/performance.md',
+        },
+        {
+          text: '对web项目的思考',
+          link: '/front/engineering/web.md',
         }
       ]
     },
