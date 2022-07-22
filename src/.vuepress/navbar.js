@@ -17,8 +17,12 @@ const navbar = [
     ]
   },
   {
+    text: '零基础了解区块链原理',
+    link: 'https://docs.qq.com/slide/DQWtRZW9OeGdPUlNI',
+  },
+  {
     text: '前端安全',
-    link: '/safe/'
+    link: 'https://docs.qq.com/slide/DQXRyb0hSUG1ocVhU'
   },
   {
     text: '设计模式',
