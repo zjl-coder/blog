@@ -22,6 +22,10 @@ const front = {
           text: '获取URL get参数',
           link: '/front/js/search-params.md',
         },
+        {
+          text: '浏览器运行环境与web worker',
+          link: 'https://docs.qq.com/slide/DQVhscEl1aHlqTlpz',
+        },
       ]
     },
     {
