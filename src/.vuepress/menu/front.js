@@ -26,6 +26,10 @@ const front = {
           text: '浏览器运行环境与web worker',
           link: 'https://docs.qq.com/slide/DQVhscEl1aHlqTlpz',
         },
+        {
+          text: 'AST抽象语法树',
+          link: '/front/js/ast.md'
+        }
       ]
     },
     {
