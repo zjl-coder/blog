@@ -29,6 +29,10 @@ const front = {
         {
           text: 'AST抽象语法树',
           link: '/front/js/ast.md'
+        },
+        {
+          text: 'Babel基本知识',
+          link: '/front/js/babel.md'
         }
       ]
     },

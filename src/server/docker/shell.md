@@ -2,7 +2,9 @@
 
 # docker shell 自动化脚本
 
-## 删除docker镜像的shell命令
+### 删除docker镜像
+删除docker镜像的shell命令  
+
 1. 比如，我们需要删除所有仓库名为 redis 的镜像
   ```bash
   docker image rm $(docker image ls -q redis)
@@ -13,10 +15,21 @@
   docker image rm $(docker image ls -q -f before=mongo:3.2)
   ```
 
-## shell脚本中echo显示内容带颜色
+### shell echo输出颜色
 [shell脚本中echo显示内容带颜色](https://www.cnblogs.com/lr-ting/archive/2013/02/28/2936792.html)
 
-## 自动化更新docker容器shell脚本
+### 自动化更新docker容器
+自动化更新docker容器shell脚本
+###### 判断容器是否运行
+第20行
+###### 判断容器是否存在
+第30行
+###### 判断镜像是否存在
+第40行
+###### 制作镜像
+第124行
+###### 启动容器
+第128行  
 ```bash
 #!/bin/bash
 
