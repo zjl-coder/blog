@@ -26,14 +26,6 @@ const front = {
           text: '浏览器运行环境与web worker',
           link: 'https://docs.qq.com/slide/DQVhscEl1aHlqTlpz',
         },
-        {
-          text: 'AST抽象语法树',
-          link: '/front/js/ast.md'
-        },
-        {
-          text: 'Babel基本知识',
-          link: '/front/js/babel.md'
-        }
       ]
     },
     {
@@ -73,8 +65,20 @@ const front = {
       link: '/front/engineering',
       children: [
         {
+          text: 'Webpack基本知识',
+          link: '/front/engineering/webpack.md',
+        },
+        {
           text: 'Webpack热更新原理解析',
           link: '/front/engineering/hmr.md',
+        },
+        {
+          text: 'AST抽象语法树',
+          link: '/front/engineering/ast.md'
+        },
+        {
+          text: 'Babel基本知识',
+          link: '/front/engineering/babel.md'
         },
         {
           text: 'es6模块化代码转es5代码的模样',
