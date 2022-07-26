@@ -150,3 +150,93 @@ webpack的`ts-loader`没有处理其他loader输出的sourcemap信息。如果�
 2. `@babel/traverse` 遍历ast对象节点，并修改ast节点，产生**ast B对象**
 3. `@babel/generator` 将**ast B对象**转化为**源码 B**和**sourceMap B-**(因为是不完整信息的sourceMap所以且称为B-，因为ast A中新增加的ast节点是没有位置信息的，所以直接生成的sourceMap没法映射新增的源码)
 4. `@babel/core` 再次接收**源码 B**和**sourceMap A**，产生一个完整的信息**sourceMap B**，这个sourceMap B信息记录着code B的信息和code A的信息。先溯源code B 再溯源code A
+
+###### AST裁剪代码示例
+**场景**  
+
+业务代码中有很多定制化的功能，使用 isBelongCustomer("客户")进行判断，决定前端代码逻辑是否要执行。当源码交付给baidu时就有可能包含不属于baidu的代码逻辑  
+```ts
+const map = {
+  baidu: true,
+  ali: false,
+}
+
+function isBelongCustomer(customer: string): boolean {
+  return map[customer];
+}
+```
+**ast裁剪代码步骤**
+1. 使用`fs-extra`、`globby` 等工具获取想要裁剪的项目文件代码 **code A**
+2. 将 **code A** 传给`@babel/core`的`transform`方法进行ast转换，同时整合其他工具产出的`sourceMap`信息，获得 `ast A` 和 `sourceMap B`。
+  ```js
+  const babelCore = require('@babel/core');
+
+  const sourceMap0 = '...'; // 其他工具产生的sourceMap信息
+
+  const codeA = ''; // 代码
+
+  const babelCoreOptions = {
+    filename: filePath,
+    sourceMaps: true, // 生成sourceMap
+    // 因为代码中含有 react 和 ts 所以需要这两个预设插件集合
+    presets: ['@babel/preset-react', '@babel/preset-typescript'], 
+  };
+  // code A、sourceMap A、ast A
+  const { code, map, ast } = babelCore.transformSync(codeA, { ...babelCoreOptions, inputSourceMap: sourceMap0 });
+  ```
+3. 将 `ast A` 传给 `@babel/traverse` 进行深度遍历，找出所有 `isBelongCustomer('baidu')`的调用方法，并转为**boolean**，处理之后变为`ast B`
+  ```js
+  const traverse = require('@babel/traverse').default;
+  const t = require('@babel/types');
+
+  const map = {
+    baidu: true,
+    ali: false,
+  }
+
+  // 深度遍历操作ast A 获得ast B
+  traverse(ast, {
+    CallExpression(opath) { // 所有调用函数表达式节点
+      const path = opath;
+      // 过滤名为 isBelongCustomer 的节点
+      if (t.isIdentifier(path.node.callee, { name: 'isBelongCustomer' })) { 
+        // 获取函数的参数，从而获取到map对应属性的开关
+        const value = map[path.node.arguments[0].value] === true;
+        let { parentPath } = path;
+        // 判断父节点是否 非 ! 的 一元运算表达式，true 就结束转换流程
+        if (!(t.isUnaryExpression(parentPath) && parentPath.node.operator === '!')) {
+          // 将当前节点替换成 boolean节点，经过替换之后，这个节点的行列位置消失了，@babel/types 创建的节点没有行列信息
+          return path.replaceWith(t.booleanLiteral(value));
+        }
+        // 父节点是 ! 的一元运算表达式，且直联祖先有可能都是，即：!!!!isBelongCustomer('xxx')
+        let count = 0;
+        // 循环计算多少个 !
+        while (t.isUnaryExpression(parentPath) && parentPath.node.operator === '!') {
+          count = count + 1;
+          parentPath = parentPath.parentPath;
+        }
+        // 找到先近的祖先非一元运算符的节点
+        const rootUnaryExpression = path.find((path) => !path.parentPath.isUnaryExpression());
+        // 多个! 可以简化为 一个 或 0个 ! 进行运算，
+        // 比如 !!isBelongCustomer('xxx') === isBelongCustomer('xxx'); !!!isBelongCustomer('xxx') === !isBelongCustomer('xxx')
+        const remainder = count % 2;
+        if (remainder === 0) {
+          // 正常替换为 boolean 节点
+          return rootUnaryExpression.replaceWith(t.booleanLiteral(value));
+        }
+        // 取反替换 boolean 节点
+        return rootUnaryExpression.replaceWith(t.booleanLiteral(!value));
+      }
+    },
+  });
+  ```
+4. 将`ast B`传给`@babel/generator`获得`code B`（ast B 直接生成的 sourceMap B- 没有新boolean节点的位置信息，所以sourceMap B- 是不可用的信息）
+  ```js
+  const generate = require('@babel/generator').default;
+
+  const { code } = generate(ast);
+  ```
+5. 将`code B` 和 `souceMap A` 传给 `@babel/core`的`transform`方法，获得 `code B` 和 `sourceMap B`
+6. 将生成的`code B`代码再覆盖原文件，或者放到某个目录下，结束  
+
+*tips*：ast 的处理能力很强大，甚至可以识别出块级作用域内的变量引用情况，并标记出来。
