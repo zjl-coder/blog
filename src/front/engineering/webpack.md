@@ -144,6 +144,30 @@ Webpack 架构很灵活，但代价是牺牲了源码的直观性，比如说上
 `compilation` 按这个流程递归处理，逐步解析出每个模块的内容以及 module 依赖关系，后续就可以根据这些内容打包输出。
 
 ###### 构建示例：层级递进
+**场景**：假如有如下图所示的文件依赖树
+![An image](./images/wp5.png)
+文件说明：其中 index.js 为 entry 文件，依赖于 a/b 文件；a 依赖于 c/d 文件。  
+
+初始化编译环境之后，`EntryPlugin` 根据 `entry` 配置找到 `index.js` 文件，调用 `compilation.addEntry` 函数触发构建流程，构建完毕后内部会生成这样的数据结构：
+![An image](./images/wp6.png)
+
+此时得到 **module[index.js]** 的内容以及对应的依赖对象 **dependence[a.js]** 、**dependence[b.js]** 。这就得到下一步的<Te d>线索</Te>：a.js、b.js，根据上面流程图的逻辑继续调用 `module[index.js]` 的 `handleParseResult` 函数，继续处理 a.js、b.js 文件，<Te d>递归</Te>上述流程，进一步得到 a、b 模块：
+![An image](./images/wp7.png)
+
+从 a.js 模块中又解析到 c.js/d.js 依赖，于是再再继续调用 **module[a.js]** 的 **handleParseResult** ，再再<Te d>递归</Te>上述流程：
+![An image](./images/wp8.png)
+
+到这里解析完所有模块后，发现没有更多新的依赖，就可以继续推进，进入下一步。
+
+###### 问题解答  
+- Webpack 编译过程会将源码解析为 AST 吗？
+  - 构建阶段会读取源码，解析为 AST 集合。
+- webpack 与 babel 分别实现了什么？
+  - Webpack 读出 AST 之后仅遍历 AST 集合；babel 则对源码做等价转换(实现ast与code之间的互相转换)
+- Webpack 编译过程中，如何识别资源对其他资源的依赖？
+  - Webpack 遍历 AST 集合过程中，**识别** require/ import 之类的导入语句，确定模块对其他资源的依赖关系
+- 相对于 grant、gulp 等流式构建工具，为什么 webpack 会被认为是新一代的构建工具？
+  - Grant、Gulp 仅执行开发者预定义的任务流；而 webpack 则深入处理资源的内容，功能上更强大
 
 #### 生成阶段
 
