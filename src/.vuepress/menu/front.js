@@ -69,6 +69,14 @@ const front = {
           link: '/front/engineering/webpack.md',
         },
         {
+          text: 'webpack plugin插件',
+          link: '/front/engineering/webpack-plugin.md',
+        },
+        {
+          text: 'webpack loader',
+          link: '/front/engineering/webpack-loader.md',
+        },
+        {
           text: 'Webpack热更新原理解析',
           link: '/front/engineering/hmr.md',
         },
