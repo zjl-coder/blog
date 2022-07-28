@@ -170,7 +170,157 @@ Webpack 架构很灵活，但代价是牺牲了源码的直观性，比如说上
   - Grant、Gulp 仅执行开发者预定义的任务流；而 webpack 则深入处理资源的内容，功能上更强大
 
 #### 生成阶段
+###### 基本流程
+构建阶段围绕 **module** 展开，生成阶段则围绕 **chunks** 展开。经过构建阶段之后，webpack 得到足够的**模块内容**与**模块关系**信息，接下来开始生成最终资源了。代码层面，就是开始执行 `compilation.seal` 函数：
+```js
+// 取自 webpack/lib/compiler.js 
+compile(callback) {
+  const params = this.newCompilationParams();
+  this.hooks.beforeCompile.callAsync(params, err => {
+    // ...
+    const compilation = this.newCompilation(params);
+    this.hooks.make.callAsync(compilation, err => {
+      // ...
+      this.hooks.finishMake.callAsync(compilation, err => {
+        // ...
+        process.nextTick(() => {
+          compilation.finish(err => {
+            **compilation.seal**(err => {...});
+          });
+        });
+      });
+    });
+  });
+}
+```
+`seal` 原意**密封**、**上锁**，seal 函数主要完成从 module 到 chunks 的转化，核心流程：
+![An image](./images/wp9.png)
+###### 流程梳理
+- 构建本次编译的 `ChunkGraph` 对象；
+- 遍历 `compilation.modules` 集合，将 **module** 按 **entry/动态引入** 的规则分配给不同的 `Chunk` <Te d>对象</Te>；
+- `compilation.modules` 集合遍历完毕后，得到完整的 `chunks` 集合对象，调用 `createXxxAssets` 方法
+- `createXxxAssets` 遍历 **module/chunk** ，调用 `compilation.emitAssets` 方法将资源 assets 信息记录到 `compilation.assets` 对象中
+- 触发 `seal` 回调，控制流回到 `compiler` 对象  
 
-### plugin插件
-### loader
-#### loader执行流程
+###### chunk对象封装规则
+这一步的关键逻辑是将 module 按规则组织成 chunks <Te d>对象</Te>，webpack 内置的 chunk 封装规则比较简单：  
+- **entry** 及 entry **触达**到的模块，组合成一个 chunk
+- 使用<Te d>动态引入语句</Te>引入的模块，<Te d>各自组合</Te>成一个 chunk
+
+###### 多入口打包示例
+以下是两个入口的配置示例
+```js
+const path = require("path");
+
+module.exports = {
+  mode: "development",
+  context: path.join(__dirname),
+  entry: {
+    a: "./src/index-a.js",
+    b: "./src/index-b.js",
+  },
+  output: {
+    filename: "[name].js",
+    path: path.join(__dirname, "./dist"),
+  },
+  devtool: false,
+  target: "web",
+  plugins: [],
+};
+```
+实例配置中有两个入口，对应的文件结构：
+![An image](./images/wp10.png)
+index-a 依赖于c，且动态引入了 e；index-b 依赖于 c/d 。根据上面说的规则  
+- **entry 及entry触达到的模块，组合成一个 chunk**
+- **使用动态引入语句引入的模块，各自组合成一个 chunk**  
+
+生成的 chunks 结构为：
+![An image](./images/wp11.png)
+也就是根据依赖关系，**chunk[a]** 包含了 **index-a/c** <Te d>两个</Te>模块；**chunk[b]** 包含了 **c/index-b/d** <Te d>三个</Te>模块；**chunk[e-hash]** 为<Te d>动态引入</Te> **e** 对应的 chunk。  
+
+chunk[a] 与 chunk[b] 同时包含了 c，如果 c 是基础库且代码量很大，那么 chunk[a] 与 chunk[b] 同时都包含 c 就造成资源<Te d>冗余</Te>，浪费资源。  
+
+###### 优化chunks结构
+为了解决这个问题，webpack 提供了一些插件如 `CommonsChunkPlugin` 、`SplitChunksPlugin`，在基本规则之外进一步优化 chunks 结构。
+###### SplitChunksPlugin的作用
+
+**SplitChunksPlugin** 是 webpack 架构高扩展的一个绝好的示例，我们上面说了 webpack 主流程里面是按 entry / 动态引入 两种情况组织 chunks 的，这必然会引发一些不必要的重复打包，webpack 通过插件的形式解决这个问题。  
+
+回顾 `compilation.seal `函数的代码，大致上可以梳理成这么4个步骤：  
+- 遍历 `compilation.modules` ，记录下模块与 **chunk** 关系
+- 触发各种模块优化钩子，这一步优化的主要是模块依赖关系
+- 遍历 **module** 构建 chunk 集合
+- 触发各种优化钩子
+
+![An image](./images/wp12.png)
+上面 1-3 都是预处理 + chunks 默认规则的实现，不在我们讨论范围，这里重点关注第4个步骤触发的 `optimizeChunks` 钩子，这个时候已经跑完主流程的逻辑，得到 **chunks 集合**，`SplitChunksPlugin` 正是使用这个钩子，分析 chunks 集合的内容，**按配置规则增加**一些<Te d>通用的 chunk</Te> 
+```js
+module.exports = class SplitChunksPlugin {
+  constructor(options = {}) {
+    // ...
+  }
+
+  _getCacheGroup(cacheGroupSource) {
+    // ...
+  }
+
+  apply(compiler) {
+    // ...
+    compiler.hooks.thisCompilation.tap("SplitChunksPlugin", (compilation) => {
+      // ...
+      compilation.hooks.optimizeChunks.tap(
+        {
+          name: "SplitChunksPlugin",
+          stage: STAGE_ADVANCED,
+        },
+        (chunks) => {
+          // ...
+        }
+      );
+    });
+  }
+};
+```
+通过 `SplitChunksPlugin` 将 c 抽离成 通用的 chunk[c], chunk[a]/[b] 共同引用 chunk[c]，而不是再同时包含 c 代码  
+
+webpack 插件架构的高扩展性，使得整个编译的主流程是可以固化下来的，分支逻辑和细节需求“外包”出去由第三方实现，这套规则架设起了庞大的 webpack 生态，关于插件架构的更多细节，下面 plugin 部分有详细介绍，这里先跳过。  
+
+###### chunks数据结构
+经过构建阶段后，`compilation` 会**获知**资源模块的**内容**与**依赖关系**，也就知道“<Te d>输入</Te>”是什么；而经过 seal 阶段处理后， compilation 则**获知**资源输出的**图谱**，也就是知道怎么“<Te d>输出</Te>”：哪些模块跟那些模块“绑定”在一起输出到哪里。seal 后大致的数据结构：
+```js
+compilation = {
+  // ...
+  modules: [
+    /* ... */
+  ],
+  chunks: [
+    {
+      id: "entry name",
+      files: ["output file name"],
+      hash: "xxx",
+      runtime: "xxx",
+      entryPoint: {xxx}
+      // ...
+    },
+    // ...
+  ],
+};
+```
+
+###### 写入文件系统
+seal 结束之后，紧接着调用 `compiler.emitAssets `函数，函数内部调用 `compiler.outputFileSystem.writeFile` 方法将 assets 集合写入文件系统
+
+### 资源形态流转
+从**资源形态流转**的角度重新思考**构建过程**和**生成过程**，总览图如下
+![An image](./images/wp13.png)
+- `compiler.make` 阶段：
+  - **entry** 文件以 **dependence 对象**形式加入 **compilation** 的**依赖列表**，dependence 对象记录有 entry 的**类型**、**路径**等信息
+  - 根据 dependence 调用对应的工厂函数创建 **module 对象**，之后读入 module 对应的**文件内容**，调用 `loader-runner` 对内容做转化，转化结果若有其它依赖则继续读入依赖资源，重复此过程直到所有依赖均被转化为 module
+- `compilation.seal` 阶段：
+  - 遍历 **module** 集合，根据 entry 配置及引入资源的方式，将 module **分配**到不同的 chunk
+  - 遍历 chunk 集合，调用 `compilation.emitAsset` 方法**标记** chunk 的**输出规则**，即转化为 assets 集合
+- `compiler.emitAssets` 阶段：
+  - 将 assets 写入文件系统
+
+### 源码阅读技巧
+[webapck 源码阅读技巧](https://juejin.cn/post/6949040393165996040#heading-22)
