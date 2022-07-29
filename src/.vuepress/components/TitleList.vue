@@ -1,6 +1,6 @@
 <template>
   <div class="titlelist">
-    <a v-for="menu in list" :key="menu.innerText" :href="menu.hash">
+    <a v-for="menu in list" :key="menu.innerText" :href="menu.hash" :class="{active: isActiveHash(menu.hash)}">
       <component :is="menu.localName">{{menu.innerText.substring(2)}}</component>
     </a>
   </div>
@@ -10,7 +10,22 @@
 export default {
   data(){
     return {
-      list: []
+      list: [],
+      hash: '',
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(val, oldVal){
+        this.hash = val.hash.substring(1);
+      },
+      // 深度观察监听
+      deep: true
+    }
+  },
+  methods: {
+    isActiveHash(str){
+      return decodeURIComponent(str) === `#${this.hash}`;
     }
   },
   mounted(){
@@ -41,6 +56,14 @@ export default {
   max-height: 650px;
   max-width: 260px;
   overflow: auto;
+  a {
+    &:hover {
+      text-decoration: none;
+    }
+  }
+  .active {
+    color: #ad9000;
+  }
   h2 {
     margin: 0px;
     margin-bottom: 10px;
