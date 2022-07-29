@@ -274,7 +274,7 @@ Source map就是一个`信息文件`，里面储存着`位置`信息。也就是
 
 webpack的`ts-loader`没有处理其他loader输出的sourcemap信息。如果要开发loader，则需要将loader放在ts-loader之后执行，否则loader修改代码之后，输出的最终sourcemap将无法准确复原源码
 
-[webpack loader执行流程](./webpack.md#loader执行流程)
+[webpack loader执行流程](./webpack-loader.md#loader执行流程)
 
 ###### 多级sourceMap可追溯
 [babel从AST生成目标代码和(多级)sourcemap的过程](https://zhuanlan.zhihu.com/p/308516099)  
