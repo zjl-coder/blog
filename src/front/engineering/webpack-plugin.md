@@ -179,3 +179,33 @@ class EntryPlugin {
 - compilation.emitAsset：直译是“提交资产”，功能可以理解将内容写入到特定路径
 - compilation.addEntry：添加入口，功能上与直接定义 entry 配置相同
 - module.addError：添加编译错误信息
+
+### Tapable
+Webpack 本质上是一种事件流的机制，它的工作流程就是将各个插件串联起来，而实现这一切的核心就是 Tapable。  
+
+Compiler 和 Compilation 都是 Tapable 的子类，并且实例内部的生命周期也是通过 Tapable 库提供的钩子类实现的。
+
+###### Tapable与EventEmitter类似
+我们知道 Node.js 的特点是事件驱动，它是通过内部的 EventEmitter 类实现的，这个类能够进行事件的监听与触发。
+```js
+const { EventEmitter } = require('events');
+const event = new EventEmitter();
+
+event.on('eventName', value => {
+  console.log('eventName 触发:', value);
+});
+
+event.emit('eventName', 'Hello, eventName');
+```
+Tapable 的功能与 EventEmitter 类似，但是更加强大，它包含了多种不同的监听和触发事件的方式。
+
+###### Tapable hook 分类
+Hook 的类型可以按照 事件回调的运行逻辑 或者 触发事件的方式 来分类。  
+
+事件回调的运行逻辑：
+![An image](./images/wp18.png)
+
+触发事件的方式：
+![An image](./images/wp19.png)
+
+[Webpack 核心库 Tapable 的使用与原理解析](https://zhuanlan.zhihu.com/p/100974318)
