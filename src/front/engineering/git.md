@@ -2,9 +2,126 @@
 
 # git常用命令
 
-### merge 与 rebase
+### 常用git命令清单
+[常用git命令清单](https://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
 
-### 删除commit
+### merge 与 rebase
+![An image](./images/git8.jpg)
+###### merge
+```bash
+git merge dev
+```
+**解释**：当前分支为master分支，将dev分支上的所有的改变内容都合并到master分支上来，对dev分支没有影响。  
+
+**<Te w>从图2可以看到</Te>**   
+
+- master(当前分支)分支上`git merge dev`之后，是在master分支上创建一个新的merge commit 节点E，并将master 的 HEAD 指向最新节点E。
+- dev分支则什么都没有变化，也没有影响。
+###### rebase
+```bash
+git branch
+```
+\* <Te s>dev</Te>  
+master  
+
+在dev分支上rebase(变基)到master
+```bash
+git rebase master
+```
+- dev：待变基分支、当前分支
+- master：基分支、目标分支
+
+**官方解释**：当执行rebase操作时，git会从两个分支的**共同祖先**开始提取**待变基分支**上的修改，然后将待变基分支指向**基分支**的最新提交，最后将刚才**提取的修改**应用到基分支的**最新提交**的后面。  
+
+**<Te w>从图3可以看到</Te>**  
+
+- 当在**dev分支**上执行`git rebase master`时，git会从master和dev的**共同祖先A**开始<Te d>提取dev分支上的修改</Te>，也就是**C**和**D**两个提交，先提取到。
+- 然后将**dev分支**指向master分支的最新提交上，也就是**B**。最后把提取的C和D接到B后面，但这个过程是<Te d>删除原来的C和D</Te>，生成新的**C^**和**D^**，他们的<Te d>提交内容一样</Te>，但<Te d>commit id不同</Te>。dev自然最后也是指向D^。    
+
+sourceTree 上显示 rebase后的 两条分支情况，是重叠在一起。
+![An image](./images/git9.jpg)
+
+- 此时，dev分支和master分支都相同且重叠(两条线的节点重叠)，<Te d>master分支落后</Te>dev分支两个节点，  
+- 此时，如果在dev分支上进行`git rebase master`操作是无效的，会输出`已经是最新的`的反馈。
+- **需要**在master分支上`git merge dev` 将master分支的最新节点同步到dev分支的最新节点，两条分支对齐。
+  - **否则** <Te d>删除</Te> dev 分支时，rebase部分的代码都将<Te d>丢失</Te>，因为dev分支没有了，而master分支还没同步。
+  - `merge`成功之后再删除dev，就不会影响rebase过来的历史节点了，（merge 不会再有冲突，有冲突在rebase时已解决了）
+
+
+### git commit 回退
+###### git reset 撤销最近多次提交
+三种方式对工作空间的改动不一样
+```bash
+git reset --soft HEAD~1
+# 撤销最近一次的commit(撤销commit，不撤销git add)
+
+git reset --mixed HEAD~1
+# 撤销最近一次的commit(撤销commit，撤销git add)
+
+git reset --hard HEAD~1 
+# 撤销最近一次的commit
+# (撤销commit，撤销git add，工作区的代码改动将丢失。操作完成后回到上一次commit状态)
+```
+::: tip
+**HEAD~1**的意思是最近一个版本，也可以写成**HEAD^** 如果需要撤回<Te d>最近两次提交的commit，可以使用HEAD~2</Te>，依次类推  
+
+`git reset --soft commitId` 则相当于 回撤到该节点`commitId`，该节点之后的所有节点都删除
+:::
+
+::: warning 撤销后，后悔了
+如果使用git reset --hard 撤销了commit，而且也推送到了远端，后悔了想要找回已撤销commit的代码变更，不用担心，**git reflog** 完全可以做到。
+:::
+###### git rebase 撤销某个提交
+如果不是撤销最近的一个或多个commit，而是撤销某个commit呢？  
+例如，只撤销第二个节点「d9a16cc」，最新的「dd55e5e」则不撤销。  
+![An image](./images/git11.png)
+
+`git reset --soft/--mixed/--hard commitId`无法做到   
+![An image](./images/git12.png)
+可以看到 「d9a16cc」节点还在，「d9a16cc」之后的节点被撤销了
+
+用**git rebase**可以做到撤销某个commit  
+
+如果要撤销“commit eee file”{cid:d9a16cc}这个提交，使用`git rebase -i 9df3805`，其中「9df3805」是eee的上一次提交的commitId。当然，也可以使用`git rebase -i HEAD~2`。   
+
+执行 `git rebase -i 9df3805` 之后，会出现下面的交互式vim编辑框
+![An image](./images/git13.png)
+按照图示将 "commit eee file" 左侧的pick改为d或者drop后，会丢掉对应的commit。从而达到撤销的目的。
+![An image](./images/git14.png)
+用 git rebase 实现撤销和 git reset --hard 的效果类似，即「删除已撤销commit的代码变更，撤销git add，工作空间回到上一次commit状态」。如果被撤销commit的代码还有用，使用时须谨慎。
+
+::: tip  git rebase tips
+git rebase命令可以做很多工作，例如优化本地分支的提交记录，分支线性化处理(避免过多的merge出现)等等。
+:::
+###### 强制提交
+`git push  origin feature/dev -f`强制覆盖远端`feature/dev`分支    
+
+主要思路就是在本地分支撤销了commit之后，将变更推送到远端。但必须用git push -f强制提交，否则会提交失败，原因是：本地的版本号低于远端的版本号。
+
+`git push origin master -f` 可能会有如下错误
+![An image](./images/git10.png)
+意思就是master分支是“protected branch”，不允许强制变更。解决方法是登录GitLab，进入项目的设置页面，选择Repository，找到Protected Branches，对分支进行「Unprotect」即可。
+
+###### git revert 回退
+git revert 是一个很安全也很好用的命令，不同于git reset的重置，它是通过**反向操作**来完成撤销的。先来看用法。  
+
+需求：撤销“commit eee file”{cid:d9a16cc} 的变更。
+![An image](./images/git15.png)
+
+git revert 后面一般跟commitId, 是你想回退的commit的id。例如在上图示例中，我想回退eee的提交，则commitId即是「d9a16cc」。  
+
+git revert 执行后会自动生成一个类似「Revert "commit message"」的新的commit。该commit的内容和需要revert的内容相反。若回退前新增了一个文件，revert后会将该文件删除；若会提前删除了一个文件的一行代码，revert后会将该文件的该行代码补回来。
+
+
+### commit 合并
+
+### cherry pick
+`git cherry-pick [commit]` 选择一个commit，合并进当前分支  
+
+[git cherry-pick 教程](https://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html)
+
+
+### mr pr
 
 ### git冲突
 冲突可以说是<Te d>两个分支</Te>的冲突
