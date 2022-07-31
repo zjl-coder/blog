@@ -107,6 +107,10 @@ const front = {
         {
           text: '对web项目的思考',
           link: '/front/engineering/web.md',
+        },
+        {
+          text: 'git常用命令',
+          link: '/front/engineering/git.md',
         }
       ]
     },
