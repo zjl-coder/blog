@@ -114,6 +114,48 @@ git revert 执行后会自动生成一个类似「Revert "commit message"」的�
 
 
 ### commit 合并
+```bash
+git rebase -i  [startpoint]  [endpoint]
+```
+- `-i` 的意思是--interactive，即弹出交互式的界面让用户编辑完成合并操作
+- [startpoint] [endpoint]则指定了一个编辑区间，如果不指定[endpoint]，则该区间的终点默认是当前分支HEAD所指向的commit(注：该区间指定的是一个前开后闭的区间)。  
+
+ 在查看到了log日志后，我们运行以下命令：
+ ```bash
+ git rebase -i 36224db
+ # 或者
+ git rebase -i HEAD~3 
+ ```
+ 然后我们会看到如下界面:
+ ![An image](./images/git16.png)
+ 上面未被注释的部分列出的是我们本次rebase操作包含的所有提交，下面注释部分是git为我们提供的命令说明。每一个commit id 前面的pick表示指令类型，git 为我们提供了以下几个命令:  
+
+- `pick`：保留该commit（缩写:`p`）
+- `reword`：保留该commit，但我需要修改该commit的注释（缩写:`r`）
+- `edit`：保留该commit, 但我要停下来修改该提交(不仅仅修改注释)（缩写:`e`）
+- `squash`：将该commit和前一个commit合并（缩写:`s`）
+- `fixup`：将该commit和前一个commit合并，但我不要保留该提交的注释信息（缩写:`f`）
+- `exec`：执行shell命令（缩写:`x`）
+- `drop`：我要丢弃该commit（缩写:`d`）  
+
+根据我们的需求，我们将commit内容编辑如下:  
+```bash
+pick d2cf1f9 fix: 第一次提交
+
+s 47971f6 fix: 第二次提交
+
+s fb28c8d fix: 第三次提交
+```
+上面的意思就是把第二次、第三次提交都合并到第一次提交上  
+
+然后wq保存退出后是注释修改界面:
+![An image](./images/git17.png)
+可以再浏览态 按下两个dd可以删除一行  
+![An image](./images/git18.png)
+编辑完保存即可完成commit的合并了：
+![An image](./images/git20.png)
+最后查看log可以发下提交合并了
+![An image](./images/git19.png)
 
 ### cherry pick
 `git cherry-pick [commit]` 选择一个commit，合并进当前分支  
@@ -121,7 +163,35 @@ git revert 执行后会自动生成一个类似「Revert "commit message"」的�
 [git cherry-pick 教程](https://www.ruanyifeng.com/blog/2020/04/git-cherry-pick.html)
 
 
-### mr pr
+### MR 与 PR 
+
+#### 日常协作的说法
+
+###### Pull Request
+
+我们如果要给别人的**公开仓库(github)**贡献代码，一般是要 `fork` 一个仓库，在自己的仓库改完后，给原仓库提交 `PR` 请求，请求原仓库主人把你的代码拉（`pull`）回去。  
+
+下图是一般的 Github 工作流程。  
+![An image](./images/git21.png)
+
+Gitlab 一般是`私有库`，一个团队维护一个仓库，通常大家会`新建自己的分支`，开发完成后，请求`合并回主干分支`。  
+
+下图是一般的 Gitlab 工作流程。  
+![An image](./images/git22.png)
+
+
+#### 官方说法 
+
+Merge Request 和 Pull Request 是同一个东西，仅仅只是名字不一样  
+
+一般我们执行分支合并，需要执行下面两个命令：  
+```bash
+git pull // 拉回需要合并的分支
+git merge // 合并进目标分支
+```
+- Github 选择了第一个命令来命名，叫 Pull Request。
+- Gitlab 选择了最后一个命令来命名，叫 Merge Request。
+
 
 ### git冲突
 冲突可以说是<Te d>两个分支</Te>的冲突
