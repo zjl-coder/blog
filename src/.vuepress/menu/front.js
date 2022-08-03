@@ -30,6 +30,10 @@ const front = {
           text: 'promise执行流程',
           link: '/front/js/promise.md',
         },
+        {
+          text: '柯里化与局部应用',
+          link: '/front/js/curry-partial.md',
+        },
       ]
     },
     {

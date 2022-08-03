@@ -35,9 +35,28 @@ function curry(fn){
 ###### 示例2
 **解决思路**  
 关键词：参数 数组 apply
-1. `curry(fn)` 缓存 `sum(...)`，返回一个新`函数(a)`，接收一个参数，
-2. 将`函数(a)`接收到的参数存在 数组`arr`内，判断数组长度，如果数组`arr`长度大于等于 `fn`参数长度，则执行`fn.apply(arr)`
-3. 
+1. `curry(fn)` 缓存 `sum(...)`
+2. 返回一个新`函数(a)`，接收一个参数，
+3. 将`函数(a)`接收到的参数存在 数组`arr`内  
+   - a. 判断数组长度，如果数组`arr`长度大于等于 `fn`参数长度，则执行`fn.apply(arr)`  
+   - b. 如果数组`arr`长度小于 `fn`参数长度，则重复**步骤2**
+```js
+function curry(fn){
+  const length = fn.length; // fn 参数长度
+  const arr = []; // 柯里化需要转化为一次传一个参数，所以还没传完的参数需要先存起来
+  return function curried(...args){ // 闭包形式返回一个函数，接收参数，并且缓存到 数组中
+    if(args.length > 0){ 
+      arr.push(args[0]) // 每次只取一个参数
+    }
+    if(arr.length >= length){
+      return fn.apply(this, arr) // 执行结果
+    } else {
+      return curried; // 循环闭包
+    }
+  }
+}
+```
+
 
 
 ### 局部应用
@@ -48,3 +67,22 @@ function curry(fn){
 ### 柯里化与局部应用
 - 柯里化是将一个多参数函数转换成多个单参数函数，也就是将一个 n 元函数转换成 n 个一元函数。
 - 局部应用则是固定一个函数的一个或者多个参数，也就是将一个 n 元函数转换成一个 n - x 元函数。
+
+###### 示例3
+偏函数与柯里化很相似，不同之处在于，偏函数返回的函数一次可以接收 n 个参数，而柯里化只能接收一个参数  
+
+使用**示例2** 进行简化改造即可得到 局部应用(偏函数)
+```js
+function curry(fn){
+  const length = fn.length; // fn 参数长度
+  return function curried(...args){ // 闭包形式返回一个函数，接收参数，并且缓存到在参数数组 args中
+    if(args.length >= length){
+      return fn.apply(this, args) // 执行结果
+    } else {
+      return function curried2(...args2){ // 创建一个新的函数接收参数，与上层函数的参数进行合并
+        return curried.apply(this, [...args, ...args2]) // 循环闭包
+      }; 
+    }
+  }
+}
+```
