@@ -75,11 +75,13 @@ function curry(fn){
 ```js
 function curry(fn){
   const length = fn.length; // fn 参数长度
-  return function curried(...args){ // 闭包形式返回一个函数，接收参数，并且缓存到在参数数组 args中
+  // 闭包形式返回一个函数，接收参数，并且缓存到在参数数组 args中
+  return function curried(...args){ 
     if(args.length >= length){
       return fn.apply(this, args) // 执行结果
     } else {
-      return function curried2(...args2){ // 创建一个新的函数接收参数，与上层函数的参数进行合并
+      // 创建一个新的函数接收参数，与上层函数的参数进行合并
+      return function curried2(...args2){ 
         return curried.apply(this, [...args, ...args2]) // 循环闭包
       }; 
     }
