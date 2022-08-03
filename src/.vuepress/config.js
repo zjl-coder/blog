@@ -15,6 +15,7 @@ module.exports = {
   description: '风时雨博客',
   base: '/blog/',
   dest: 'docs',
+  open: true,
   theme: defaultTheme({
     contributors: false,
     navbar,
