@@ -28,6 +28,10 @@ const navbar = [
     text: '设计模式',
     link: 'https://zjl-coder.github.io/design-pattern/',
   },
+  {
+    text: '算法',
+    link: '/algorithm/',
+  },
 ]
 
 module.exports = { navbar }
