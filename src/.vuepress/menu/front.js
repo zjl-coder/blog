@@ -42,6 +42,10 @@ const front = {
           text: 'three.js',
           link: '/front/js/threejs.md',
         },
+        {
+          text: '*.d.ts全局类型声明',
+          link: '/front/js/d-ts.md',
+        },
       ]
     },
     {
