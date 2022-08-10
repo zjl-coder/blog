@@ -34,5 +34,24 @@ declare interface Window {
 
 **解决办法**：[*.d.ts导入import其它类型导致全局类型失效问题排查及解决办法](https://juejin.cn/post/6981281393812701191)
 
+### ts-node(或nodemon)找不到d.ts
+
+ts-node 默认不使用 tsconfig.json 中的 files， include 或者 exclude 配置，而是从入口文件开始，根据文件依赖路径去查找编译文件。  
+
+开发者在写ts node 代码时，没有引入 **.d.ts** 的声明，会存在 *.d.ts 没有被自动识别并报错类型定义找不到的问题。  
+
+解决方案：[ts-node（或nodemon） 提示找不到 TypeScript 类型声明？4个解决方案完整代码奉上](https://juejin.cn/post/7075525132998934559)
+
+方案2：使用 ts-node: { files } 配置 最方便  
+
+tsconfig.json
+```json
+{
+  "compilerOptions": {...}
+  "ts-node": {
+    "files": true // 增加这一条配置即可，其他同默认配置
+  },
+}
+```
 
 
