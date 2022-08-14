@@ -2,7 +2,44 @@
 
 # 前端工程化
 
-## 项目代码规范
+### vscode 快捷设置
+[vscode的设置settings.json](https://juejin.cn/post/7087515141197004813)  
+
+`项目根目录/.vscode/settings.json` 文件会覆盖vscode编辑器的全局设置，配置只会作用于当前项目。  
+
+以下是常用配置  
+```json
+{
+  "eslint.validate": [  // 用 eslint 插件检测以下几种语言，如果vscode 没有按照eslint插件则不起作用
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "editor.formatOnSave": false, // 设置保存文件时是否自动格式化，true表示自动格式化,需要配置格式化器(formatter)才可使用
+  "eslint.alwaysShowStatus": true, 
+  "editor.codeActionsOnSave": {  // 设置保存时要做的事情
+    "source.fixAll.eslint": true // 保存时自动修复eslint规则错误的那部分代码
+  }
+}
+```
+
+显示vscode eslint 插件的状态
+```json
+"eslint.alwaysShowStatus": true,
+```
+![An image](./images/engineering1.png)
+
+`项目根目录/.vscode/launch.json` vscode用于调试时使用，一般node下作用比较大。  
+[【VScode】里的launch.json是干什么用的](https://juejin.cn/post/7063655822965866527)   
+[vscode调试入门](https://juejin.cn/post/6956832271236071431)  
+
+### 项目代码规范
+
+###### eslint 静态语法检查
+
+##### css 规范
+
 **代码规范标准**：基于 Airbnb 的公司编码规范来统一代码规范  
 
 **配置关键**：搭配使用 ESlint + Prettier + Husky+ Lint-staged  
@@ -27,21 +64,12 @@ npm i -D eslint prettier eslint-config-prettier husky lint-staged
   ]
 }
 ```   
-###### 修改工作区settings.json文件
-安装VSCode插件 下载并安装 VSCode 的 Prettier - Code formatter 插件。 配置工作区
-```json
-{
-  "prettier.eslintIntegration":true,
-  "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
-}
-```
-## Git 约定
 
-### 分支规范
+### Git 规范
+
+###### 分支管理规范
 团队使用 git 分支的形式基本符合 git-flow 的规范。
-### 提交规范
+###### commit规范
 - 团队之间遵守同一套 commit message 规范， Angular 规范。
 - 搭配使用：commitizen + cz-conventional-changelog + commitlint + husky
 - 凡是用到 `git commit` 命令，一律改为使用 `git cz` 。这时，就会出现选项，用来生成符合格式的 Commit message。并且在每次 commit 时执行 commitlint 检查我们输入的 message。
