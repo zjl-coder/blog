@@ -23,8 +23,8 @@ const front = {
           link: '/front/js/search-params.md',
         },
         {
-          text: '浏览器运行环境与web worker',
-          link: 'https://docs.qq.com/slide/DQVhscEl1aHlqTlpz',
+          text: 'v8引擎与web worker',
+          link: '/front/js/web-worker.md',
         },
         {
           text: 'promise执行流程',

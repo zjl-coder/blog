@@ -90,23 +90,17 @@ module.exports = {
 ##### package.json
 ```json
 {
-  "name": "@tencent/tea-app-diagnosis",
+  "name": "diagnosis",
   "version": "1.0.0",
   "description": "The diagnosis tea app for qcloud console",
   "main": "src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tea dev",
-    "scan": "tea scan",
-    "build": "tea build",
-    "deploy": "tea commit",
     "eslint": "eslint ./src --fix --ext .tsx,.ts,.js",
     "commit": "git-cz",
     "prettier": "prettier --write \"src/**/*.js\" \"src/**/*.jsx\" \"src/**/*.ts\" \"src/**/*.tsx\""
   },
   "keywords": [
-    "tea",
-    "app",
     "diagnosis"
   ],
   "engines": {
@@ -118,34 +112,9 @@ module.exports = {
     "last 3 versions",
     "not ie < 11"
   ],
-  "dependencies": {
-    "@tencent/iaas-common": "^3.6.0",
-    "@tencent/iaas-component": "^0.2.53",
-    "@tencent/tea-app": "^2.0.0",
-    "@tencent/tea-component": "^2.0.0",
-    "@tencent/tea-style-cloud-api": "^1.0.4",
-    "@types/react-redux": "^7.1.16",
-    "lodash": "^4.17.21",
-    "moment": "^2.29.1",
-    "react": "^16.10.0",
-    "react-dom": "^16.10.0",
-    "react-redux": "^7.2.4",
-    "react-router-dom": "^5.2.0",
-    "redux": "^4.1.0",
-    "redux-logger": "^3.0.6",
-    "redux-saga": "^1.1.3",
-    "redux-saga-catch": "0.0.10",
-    "saga-duck": "^3.4.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@tencent/eslint-config-tencent": "^0.15.1",
-    "@tencent/eslint-plugin-tea-i18n": "^0.1.1",
-    "@tencent/tea-scripts": "^2.0.0",
-    "@tencent/tea-types": "^0.1.0",
-    "@types/lodash": "^4.14.170",
-    "@types/react": "^16.8.4",
-    "@types/react-dom": "^16.8.2",
-    "@types/redux": "^3.6.0",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
     "eslint": "^7.29.0",
