@@ -34,6 +34,18 @@ const front = {
           text: '柯里化与局部应用',
           link: '/front/js/curry-partial.md',
         },
+        {
+          text: 'click回调的异步与同步',
+          link: '/front/js/click.md',
+        },
+        {
+          text: 'three.js',
+          link: '/front/js/threejs.md',
+        },
+        {
+          text: '*.d.ts全局类型声明',
+          link: '/front/js/d-ts.md',
+        },
       ]
     },
     {
