@@ -351,8 +351,8 @@ npm i lint-staged -D
 ```
 在 commit 之前，将暂存区的内容做一次 代码检查 和 代码美化，然后再添加到暂存区；然后再 commit。按**数组顺序**执行命令。
 
-###### cz日志生成器
+### cz日志生成器
 conventional-changelog
 
-###### 自动生成变更日志
+### 自动生成变更日志
 release-it  
