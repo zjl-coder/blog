@@ -3,6 +3,10 @@ const front = {
   link: '/front/',
   children: [
     {
+      text: '职业',
+      link: '/front/work'
+    },
+    {
       text: 'js',
       link: '/front/js',
       children: [

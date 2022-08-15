@@ -20,7 +20,9 @@
   "eslint.alwaysShowStatus": true, 
   "editor.codeActionsOnSave": {  // 设置保存时要做的事情
     "source.fixAll.eslint": true // 保存时自动修复eslint规则错误的那部分代码
-  }
+  },
+  // tab 大小为2个空格
+  "editor.tabSize": 2,
 }
 ```
 
@@ -38,8 +40,8 @@
 #### eslint 静态js检查工具
 [eslint 文档](https://cn.eslint.org/)  
 
-- `npm install eslint` 代码包的eslint，提供eslint检查的功能和规则 
-- `vsCode eslint 插件` 根据 npm eslint 包自动检查代码，并将错误高亮显示，提供可视化的eslint 操作代码功能。优先识别项目本地的 eslint npm 包，没有再识别全局的 eslint 包。
+- `npm install eslint` 代码包的eslint，提供eslint检查的功能和规则。 
+- `vsCode eslint 插件` 根据 npm eslint 包自动检查代码，并将错误高亮显示，提供可视化的eslint 操作代码功能(边写，边看，边修复，没有这个插件，则只有在运行 eslint命令之后才能看到问题并修复)。优先识别项目本地的 eslint npm 包，没有再识别全局的 eslint 包。
 
 ###### eslint配置文件
 在根目录创建eslint配置文件的三种方法  
@@ -51,8 +53,22 @@
 - 'plugins' doesn't add plugins to configuration to load. Please use the 'overrideConfig.plugins' option instead.  
 - 通常是vscode哪个地方默认传了错误参数的格式，多见于vcCode插件已经废弃了，版本落后导致的，一般重新装插件，或者重装vsCode可解决。
 :::
+###### eslint 配置文件字段
+eslint有extends和plugins两个配置。  
+- **plugins**要引入对应的插件模块，然后配置相对应的规则**rules**才会生效。
+- 而**extends**是已经配置好的规则，**后面的**extends会**覆盖前面的**extends。
 
 [ESLint 配置文件字段解释](https://juejin.cn/post/7012798266089668645#heading-6)
+
+[eslint 命令行参数](https://cn.eslint.org/docs/user-guide/command-line-interface)
+
+常见命令行参数  
+- `--init` 初始化eslint配置文件
+- `--debug` 输出调试信息
+- `--ext [String]` 指定文件扩展名 - 默认: .js
+- `--cache`  仅检查更改的文件
+- `--fix` 自动修复问题
+- `-c`, `--config path::String` 指定配置文件 如果存在`.eslintrc.*`配置，则覆盖
 
 ###### --ext 检查文件
 ```bash
@@ -74,35 +90,141 @@ npx eslint --fix index.js
 ```
 #### css 规范
 
-#### 代码格式
-prettier   
-eslint 自带  
-stylelint 自带  
+`stylelint`为css的lint工具。可格式化css代码，检查css语法错误与不合理的写法，指定css书写顺序等  
 
-**代码规范标准**：基于 Airbnb 的公司编码规范来统一代码规范  
+[配置styleling](https://juejin.cn/post/7118294114734440455#heading-19)
 
-**配置关键**：搭配使用 ESlint + Prettier + Husky+ Lint-staged  
+#### 代码风格 prettier
+执行了`eslint index.js --fix`之后，js文件只是增加了**分号**，**双引号**。但是代码的格式该怎么乱还是怎么乱，即不美观，也不工整。并且eslint只能作用于js文件，像html，css，json，vue文件，eslint都处理不了他们的代码格式的问题。此时prettier认为代码的格式也很重要，于是prettier诞生了。  
 
-- `Prettier` 格式化代码风格
-- `ESlint` 检查语法
-- `Husky` 实现各种各种 git-hook 。这里主要使用 pre-commit，在每次 commit 之前执行 prettier 的格式化和 ESLint 的校验
-- `Lint-staged` 用于对 Git 暂存区中的文件执行代码检测
-- ` eslint-config-prettier` 和一般的 eslint-config-xxx 不同，它不是用来共享 ESlint 配置的，而是用来关闭 ESLint 的样式规则的，避免 ESLint 的样式规则和 Prettier 冲突。使用该配置后，对代码进行 prettier 和 eslint 就不会冲突了。但要注意一定要把它放在 extends 中最后的位置，避免后续的配置又把相关规则打开了。 需要配置 .eslintrc.js 和 .prettierrc.js ，另外需要配置 .eslintignore 和 .prettierignore 来忽略掉那些你不想校验的文件，用法和 git 的 .gitignore 一样。
+- `prettier` 项目代码风格包。
+- `vsCode prettier` prettier的vscode插件。每次执行npx prettier --write .才会修改格式。想要在我写代码的时候，一Ctrl+S保存就能自动格式化代码，就需要安装该插件。
+
+`vsCode prettier` 安装完后再配置一下prettier自动保存：
+.vscode/settings.json
+```json
+{
+  ...
+
+  "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+}
+```
+上面是针对不同类型的文件指定不同的formatter，也可以一次性执行所有类型文件的formatter  
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
+```
+
+
+###### 统一代码风格
+```bash
+npm i prettier -D
+npx prettier --write index.js index.css
+```
+
+###### prettier 常见命令参数
+- `npx prettier src` 格式化src/目录下的所有文件并输出到标准输出
+- `npx prettier "src/*.js"` 格式化src/目录下的 js 代码文件并输出到标准输出
+- `npx prettier --write "src/*.js"` 格式化src/目录下的 js 代码文件并写入
+- `npx prettier --check "src/*.js"` 检查src/目录下哪些 js 代码文件需要格式化
+- `npx prettier --list-different "src/*.js"` 检查src/目录下哪些 js 代码文件需要格式化
+- `npx prettier --find-config-path "src/*.js"` 查看有效的配置文件
+- `npx prettier --config prettier.config.js "src/*.js"` 手动指定配置文件
+- `npx prettier --ignore-path .prettierignore "src/*.js"` 手动指定忽略配置文件
+- `npx prettier --no-config "src/*.js"` 不读取配置文件并使用默认配置进行格式化
+- `npx prettier --no-editorconfig "src/*.js"`  忽略.editorconfig。如果项目根目录下存在.editorconfig，那么默认情况下，Prettier 在解析配置文件的时候，也会解析.editorconfig。  
+
+注意：.editorconfig的优先级比 Prettier 配置文件的优先级低。
+
+
+###### 自定义代码风格
+*vscode IDE prettier插件 快捷键  shift + option + f*  
+
+`项目根目录/.prettierrc.js`(或 `prettier.config.js`)  
+```js
+module.exports = {
+  // 一行最多 120 字符
+  printWidth: 120,
+  // 使用 2 个空格缩进
+  tabWidth: 2,
+  // 不使用缩进符，而使用空格
+  useTabs: false,
+  // 行尾需要有分号
+  semi: true,
+  // 使用单引号
+  singleQuote: true,
+  // 对象的 key 仅在必要时用引号
+  quoteProps: 'as-needed',
+  // jsx 不使用单引号，而使用双引号
+  jsxSingleQuote: false,
+  // 末尾需要逗号
+  trailingComma: 'all',
+  // 大括号内的首尾需要空格
+  bracketSpacing: true,
+  // jsx 标签的反尖括号需要换行
+  jsxBracketSameLine: false,
+  // 箭头函数，只有一个参数的时候，也需要括号
+  arrowParens: 'always',
+  // 每个文件格式化的范围是文件的全部内容
+  rangeStart: 0,
+  rangeEnd: Infinity,
+  // 不需要写文件开头的 @prettier
+  requirePragma: false,
+  // 不需要自动在文件开头插入 @prettier
+  insertPragma: false,
+  // 使用默认的折行标准
+  proseWrap: 'preserve',
+  // 根据显示样式决定 html 要不要折行
+  htmlWhitespaceSensitivity: 'css',
+  // 换行符使用 lf
+  endOfLine: 'lf',
+};
+```
+###### prettier 与 eslint 冲突
+prettier的配置与eslint的配置冲突，会导致代码保存时，一会是 prettier 风格，一会又是 eslint 风格
+
+**四种解决办法**
+- eslint和prettier的配置要统一，不能冲突
+- 把eslint插件的自动保存配置删除了，只要prettier的自动保存。这时候eslint fix 需要通过命令操作。
+- `eslint-plugin-prettier`： 基于 prettier 代码风格的 eslint 规则，使eslint使用pretter规则来格式化代码。`eslint-config-prettier`： 禁用所有与格式相关的 eslint 规则，解决 prettier 与 eslint 规则冲突，确保将其放在 extends 队列最后，这样它将覆盖其他配置
+- `lint-staged` 删除 vscode prettier 依靠 git hooks 的 pre-commit 生命周期 执行 npx prettier 和 eslint 对代码进行格式化。  
 
 ```bash
-npm i -D eslint prettier eslint-config-prettier husky lint-staged
+npm i -D prettier eslint-config-prettier
 ```
-###### 修改项目 .eslintrcs 文件
+**修改项目 .eslintrcs 文件**
+```json
+{
+  plugins: ["prettier"], // eslint-plugin-prettier
+  extends: [
+    // 各种你需要继承的配置列在前面
+    // prettier 规则列在最后
+    "prettier", // eslint-config-prettier 可简写成 prettier
+  ],
+  rules: {
+    "prettier/prettier": "error" // 开启规则
+  }
+}
+```  
+eslint-config-prettier 下还有 @typescript-eslint.js, babel.js, react.js, prettier.js, vue.js 等文件，其内容是禁掉与它搭配使用的插件中创建的与 Prettier 冲突的规则。  
+
+例如：当我们想校验 ts 文件时，需要引入 @typescript-eslint/eslint-plugin，这个插件中存在一些与 Prettier 冲突的规则，prettier/@typescript-eslint.js 就是禁掉这些规则。  
+
 ```json
 {
   extends: [
-    // 各种你需要继承的配置列在前面
-    "@tencent/eslint-config-tencent"
-    // prettier 规则列在最后
-    "prettier"
+    "plugin:@typescript-eslint/recommended", // 引入相关插件
+    "prettier", // 禁用 ESLint 中与 Prettier 冲突的规则
+    "prettier/@typescript-eslint" // 禁用插件中与 Prettier 冲突的规则
   ]
 }
-```   
+```
 
 ### Git 规范
 
@@ -196,110 +318,41 @@ npx husky add .husky/prepare-commit-msg 'exec < /dev/tty && node_modules/.bin/cz
 [自定义提交规范 提示文案](https://juejin.cn/post/6844903831893966856#heading-14)
 ### lint-staged
 
+`lint-staged`：一个仅仅过滤出 Git 代码暂存区文件(被 git add 的文件)的工具；这个很实用，因为我们如果对整个项目的代码做一个检查，可能耗时很长，如果是老项目，要对之前的代码做一个代码规范检查并修改的话，这可能就麻烦了，可能导致项目改动很大。所以这个 lint-staged，对团队项目和开源项目来说，是一个很好的工具，它是对个人要提交的代码的一个规范和约束。
+
+###### 代码增量检测
+安装lint-staged（实现代码增量检测，只检测添加到git缓存区的文件）
+```bash
+npm i lint-staged -D
+```
+在 package.json 中添加lint命令
+```json
+{
+  "script": {
+    "lint": "lint-staged"
+  }
+}
+```
+添加lint-staged配置  
+- 方法一：在package.json中添加
+- 方法二：创建.lintstagedrc 文件
+- 方法三：创建lint-staged.config.js 文件并进行配置  
+
+以package.json中添加为例  
+```json
+{
+  "lint-staged": {
+    "src/**/*.{js.vue}": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
+  }
+}
+```
+在 commit 之前，将暂存区的内容做一次 代码检查 和 代码美化，然后再添加到暂存区；然后再 commit。按**数组顺序**执行命令。
+
 ###### cz日志生成器
 conventional-changelog
 
 ###### 自动生成变更日志
 release-it  
-
-
-*vscode IDE prettier插件 快捷键  shift + option + f*
-##### prettier.config.js
-```js
-module.exports = {
-  // 一行最多 120 字符
-  printWidth: 120,
-  // 使用 2 个空格缩进
-  tabWidth: 2,
-  // 不使用缩进符，而使用空格
-  useTabs: false,
-  // 行尾需要有分号
-  semi: true,
-  // 使用单引号
-  singleQuote: true,
-  // 对象的 key 仅在必要时用引号
-  quoteProps: 'as-needed',
-  // jsx 不使用单引号，而使用双引号
-  jsxSingleQuote: false,
-  // 末尾需要逗号
-  trailingComma: 'all',
-  // 大括号内的首尾需要空格
-  bracketSpacing: true,
-  // jsx 标签的反尖括号需要换行
-  jsxBracketSameLine: false,
-  // 箭头函数，只有一个参数的时候，也需要括号
-  arrowParens: 'always',
-  // 每个文件格式化的范围是文件的全部内容
-  rangeStart: 0,
-  rangeEnd: Infinity,
-  // 不需要写文件开头的 @prettier
-  requirePragma: false,
-  // 不需要自动在文件开头插入 @prettier
-  insertPragma: false,
-  // 使用默认的折行标准
-  proseWrap: 'preserve',
-  // 根据显示样式决定 html 要不要折行
-  htmlWhitespaceSensitivity: 'css',
-  // 换行符使用 lf
-  endOfLine: 'lf',
-};
-```
-##### package.json
-```json
-{
-  "name": "diagnosis",
-  "version": "1.0.0",
-  "description": "The diagnosis tea app for qcloud console",
-  "main": "src/app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint ./src --fix --ext .tsx,.ts,.js",
-    "commit": "git-cz",
-    "prettier": "prettier --write \"src/**/*.js\" \"src/**/*.jsx\" \"src/**/*.ts\" \"src/**/*.tsx\""
-  },
-  "keywords": [
-    "diagnosis"
-  ],
-  "engines": {
-    "typescript": ">3.3"
-  },
-  "license": "UNLICENSED",
-  "browserslist": [
-    "defaults",
-    "last 3 versions",
-    "not ie < 11"
-  ],
-  "dependencies": {},
-  "devDependencies": {
-    "@tencent/eslint-config-tencent": "^0.15.1",
-    "@typescript-eslint/eslint-plugin": "^4.28.1",
-    "@typescript-eslint/parser": "^4.28.1",
-    "eslint": "^7.29.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-html": "^6.1.2",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.21.5",
-    "git-cz": "^4.7.6",
-    "husky": "^6.0.0",
-    "lint-staged": "^11.0.0",
-    "prettier": "^2.3.0",
-    "typescript": "^3.3.3333"
-  },
-  "commitlint": {
-    "extends": [
-      "@commitlint/config-conventional"
-    ]
-  },
-  "lint-staged": {
-    "src/**/*{.ts,.tsx,.js,jsx}": [
-      "eslint --fix --ext .tsx,.ts,.js"
-    ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  }
-}
-```
