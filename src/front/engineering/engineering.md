@@ -35,10 +35,49 @@
 [vscode调试入门](https://juejin.cn/post/6956832271236071431)  
 
 ### 项目代码规范
+#### eslint 静态js检查工具
+[eslint 文档](https://cn.eslint.org/)  
 
-###### eslint 静态语法检查
+- `npm install eslint` 代码包的eslint，提供eslint检查的功能和规则 
+- `vsCode eslint 插件` 根据 npm eslint 包自动检查代码，并将错误高亮显示，提供可视化的eslint 操作代码功能。优先识别项目本地的 eslint npm 包，没有再识别全局的 eslint 包。
 
-##### css 规范
+###### eslint配置文件
+在根目录创建eslint配置文件的三种方法  
+- `.\node_modules\.bin\eslint --init ` 用本地eslint包初始化配置文件
+- `eslint --init` 用全局eslint包初始化配置文件
+- `npx eslint --init` 用本地eslint模块，没有就远程下载个临时包执行
+
+::: danger eslint配置错误问题
+- 'plugins' doesn't add plugins to configuration to load. Please use the 'overrideConfig.plugins' option instead.  
+- 通常是vscode哪个地方默认传了错误参数的格式，多见于vcCode插件已经废弃了，版本落后导致的，一般重新装插件，或者重装vsCode可解决。
+:::
+
+[ESLint 配置文件字段解释](https://juejin.cn/post/7012798266089668645#heading-6)
+
+###### --ext 检查文件
+```bash
+# 检查多个文件
+npx eslint file1.js file2.js
+
+# 使用 glob 正则，检查目录下所有文件
+npx eslint lib/**
+
+# --ext用于指定检测的文件范围。以下命令表示检测src文件夹下的js和vue结尾的文件。
+npx eslint --ext .js,.vue src/
+```
+
+###### --fix
+自动修复可修复的问题
+```bash
+# index.js 中可自动修复的问题会被修复并忽略
+npx eslint --fix index.js
+```
+#### css 规范
+
+#### 代码格式
+prettier   
+eslint 自带  
+stylelint 自带  
 
 **代码规范标准**：基于 Airbnb 的公司编码规范来统一代码规范  
 
@@ -72,7 +111,97 @@ npm i -D eslint prettier eslint-config-prettier husky lint-staged
 ###### commit规范
 - 团队之间遵守同一套 commit message 规范， Angular 规范。
 - 搭配使用：commitizen + cz-conventional-changelog + commitlint + husky
-- 凡是用到 `git commit` 命令，一律改为使用 `git cz` 。这时，就会出现选项，用来生成符合格式的 Commit message。并且在每次 commit 时执行 commitlint 检查我们输入的 message。
+- 凡是用到 `git commit` 命令，一律改为使用 `git cz` 。这时，交互式commit模板，用来生成符合格式的 Commit message。并且在每次 commit 时执行 commitlint 检查我们输入的 message。
+
+#### git commit 规范工具
+###### git生命周期工具 husky
+类似于前端框架中的**生命周期钩子**，git在某些特定事件发生前或后也会有某些执行特定功能的钩子，githooks就是在git执行特定事件（如commit、push、receive等）时触发运行的脚本。  
+
+githooks 保存在 .git 文件夹中  
+
+`husky` 是一个让配置 git 钩子变得更简单的工具。支持所有的git钩子。
+
+husky 8.x 使用教程
+- 安装husky `npm install husky --save-dev`
+- 要在安装后自动启用钩子，我们需要执行`npm set-script prepare "husky install"`
+- 执行完上一步的命令之后可以在package.json 文件的scripts配置项中看到如下代码：
+  ```json
+  {
+    "scripts": {
+      "prepare": "husky install"
+    }
+  }
+  ```
+- 初始化 husky `npx husky-init` 或 `npm run prepare`
+- 创建钩子，比如我们创建一个commit-msg钩子 `npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'`(在 commit-msg 时 执行 npx --no-install commitlint --edit "$1")
+  - 安装其他 git 钩子只需要执行 `husky add .husky/钩子名字 "npm test"`就行了
+###### commit 校验工具 commitlint
+- `commitlint`: 可以帮助我们 lint commit messages, 如果我们提交的不符合指向的规范, 直接拒绝提交  
+- `@commitlint/cli`: [使用方式](https://www.npmjs.com/package/@commitlint/cli)。命令行校验文本信息是否符合 `commitlint`规则。(可装可不装)
+- `@commitlint/config-angular` angular 规范的规则  
+
+创建commitlint校验规则配置文件
+项目根目录下创建 commitlint.config.js
+```bash
+npm install --save-dev @commitlint/config-angular
+echo "module.exports = {extends: ['@commitlint/config-angular']};" > commitlint.config.js
+```
+
+经过husky的commit-msg配置好钩子，并且配置好commit之后，git commit -m "xxx" 就会进行文案是否符合angular规范的校验了。  
+
+但是规范有时候很难写，可以提供一下互动式命令行。
+###### commit 模板 commitizen 
+- `commitizen` 一个帮助撰写规范 commit messages 的工具，只有纯命令行文本显示。
+- `cz-conventional-changelog` 交互式commit适配器，通过交互式命令提供约定的commit格式，不同的需求，可以使用不同的适配器。  
+
+初始化Conventional Commits规范适配器
+```bash
+npx commitizen init cz-conventional-changelog --save-dev --save-exact
+
+npm set-script commit "cz"
+```
+`cz`与`git-cz`是相同的命令，cz-conventional-changelog 的启动命令
+![An image](./images/engineering2.png)
+在package.json会生成以下信息
+```json
+{
+  "scripts": {
+    "prepare": "husky install",
+    "commit": "git-cz"
+  },
+  ...
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
+```
+通过`npm run commit` 可以代替 `git commit -m "feat:xxx"`  
+
+有些人熟悉模板格式，可以直接 `git commit -m "feat:xxx"` ，不熟悉模板格式的 可以使用 `npm run commit`。是一种推荐的方式。
+
+###### 强制git-cz
+即 强制 git commit -m ""时，进行交互式命令，这种方式不推荐。  
+
+注册 prepare-commit-msg 钩子
+```bash
+npx husky add .husky/prepare-commit-msg 'exec < /dev/tty && node_modules/.bin/cz --hook || true'
+```
+这样就可以刪除 package.json的属性 script 中的 commit 命令了  
+
+控制终端(/dev/tty)  
+
+###### cz-customizable
+[自定义提交规范 提示文案](https://juejin.cn/post/6844903831893966856#heading-14)
+### lint-staged
+
+###### cz日志生成器
+conventional-changelog
+
+###### 自动生成变更日志
+release-it  
+
 
 *vscode IDE prettier插件 快捷键  shift + option + f*
 ##### prettier.config.js
