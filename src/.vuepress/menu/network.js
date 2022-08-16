@@ -9,6 +9,10 @@ const network = {
         {
           text: 'HTTP长连接、短连接和websocket',
           link: '/network/tcp/connection.md',
+        },
+        {
+          text: 'HTTP教程',
+          link: '/network/tcp/http.md',
         }
       ]
     }
