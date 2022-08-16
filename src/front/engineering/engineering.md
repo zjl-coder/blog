@@ -2,6 +2,10 @@
 
 # 前端工程化
 
+![An image](./images/engineering3.png)
+[前端工程化 - 结构化思维图](https://docs.qq.com/mind/DQXBtTENrWXZJY1Bm)
+
+
 ### vscode 快捷设置
 [vscode的设置settings.json](https://juejin.cn/post/7087515141197004813)  
 
