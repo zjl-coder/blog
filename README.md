@@ -8,4 +8,8 @@
 - `gh-pages` 发布代码分支，Github Actions workflow 执行后 存放的代码，然后 page-build-deployment 执行发布文档.[github ci 流程](https://github.com/zjl-coder/blog/actions)
 
 ## access token
-只有7七天时间，需要及时更新
+只有7七天时间，需要及时更新  
+
+- [token 生成地址](https://github.com/settings/tokens)
+- [token 更新地址](https://github.com/zjl-coder/blog/settings/secrets/actions)
+- 更新 Repository secrets 框的 ACCESS_TOKEN
