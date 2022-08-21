@@ -5,7 +5,7 @@
 
 ## 分支
 - `master` 源码管理分支，不能作为**发布分支**，会被 github actions workflow 发布后的代码所覆盖
-- `gh-pages` 发布代码分支，github actions workflow 发布后 存放的代码是docs
+- `gh-pages` 发布代码分支，Github Actions workflow 执行后 存放的代码，然后 page-build-deployment 执行发布文档.[github ci 流程](https://github.com/zjl-coder/blog/actions)
 
 ## access token
 只有7七天时间，需要及时更新

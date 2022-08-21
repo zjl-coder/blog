@@ -24,6 +24,17 @@ jobs:
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}
+      # - name: Deploy
+      #   uses: JamesIves/github-pages-deploy-action@v4
+      #   with:
+      #     token: ${{ secrets.ACCESS_TOKEN }}
+      #     folder: ./docs
+      #     branch: gh-pages
+      #     force: true
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+  deploy:
+    needs: build
+    steps:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
@@ -32,4 +43,5 @@ jobs:
           branch: gh-pages
           force: true
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
 
