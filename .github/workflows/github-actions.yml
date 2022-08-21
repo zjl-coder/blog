@@ -22,3 +22,43 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+    step: 
+      - name: Pull ghcr.io/actions/jekyll-build-pages:v1.0.4
+        pull: down action image 'ghcr.io/actions/jekyll-build-pages:v1.0.4'
+      - name: Build with Jekyll
+        run: actions/jekyll-build-pages@v1
+        whith: 
+          source: ./docs
+          destination: ./docs/_site
+          future: false
+          build_revision: c09d3f41329be79ddc7a54992652579636a54a54
+          verbose: true
+          token: ***
+      - name: Upload artifact
+        run: actions/upload-pages-artifact@v0
+        with:
+          path: ./docs/_site
+          retention-days: 1
+      - name: Post Checkout
+        post: job cleanup.
+    step: 
+      - name: Report Build Sratus
+        run: actions/deploy-pages@v1
+        with: 
+          emit_telemetry: true
+          token: ***
+          timeout: 600000
+          error_count: 10
+          reporting_interval: 5000
+          artifact_name: github-pages
+    step:
+      - name: Deploy to GitHub Pages
+        run: actions/deploy-pages@v1
+        with:
+          emit_telemetry: false
+          token: ***
+          timeout: 600000
+          error_count: 10
+          reporting_interval: 5000
+          artifact_name: github-pages
+
