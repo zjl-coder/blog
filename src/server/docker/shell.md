@@ -146,6 +146,9 @@ echo -e "\033[32m mv ./dockerrun.sh ./${nodeName}/dockerrun.sh \033[0m"
 # 更新dockerrun.sh
 cp ./dockerrun.sh ./${nodeName}/dockerrun.sh
 
+# 替换db.ts文件,去掉生产环境db信息,让测试环境执行更安全
+cp ./db.ts ./${nodeName}/src/config/db.ts
+
 echo -e "\033[32m 进入node项目根目录，构建镜像 \033[0m"
 
 cd $nodeName
