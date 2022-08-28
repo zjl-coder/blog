@@ -35,6 +35,10 @@ const algorithm = {
           link: '/algorithm/leetcode/hard/1.md',
         },
         {
+          text: '最长连续序列',
+          link: '/algorithm/leetcode/hard/8.md',
+        },
+        {
           text: '接雨水',
           link: '/algorithm/leetcode/hard/3.md',
         },
