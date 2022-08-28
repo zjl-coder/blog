@@ -39,6 +39,14 @@ const algorithm = {
           link: '/algorithm/leetcode/hard/8.md',
         },
         {
+          text: '寻找重复数',
+          link: '/algorithm/leetcode/hard/10.md',
+        },
+        {
+          text: '基本计算器 II',
+          link: '/algorithm/leetcode/hard/9.md',
+        },
+        {
           text: '接雨水',
           link: '/algorithm/leetcode/hard/3.md',
         },
