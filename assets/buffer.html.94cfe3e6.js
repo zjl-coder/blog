@@ -1,1 +1,0 @@
-const e=JSON.parse('{"key":"v-598a5b82","path":"/server/node/buffer.html","title":"\u7406\u89E3node buffer","lang":"zh-CN","frontmatter":{},"excerpt":"","headers":[],"git":{"updatedTime":1661702474000},"filePathRelative":"server/node/buffer.md"}');export{e as data};
