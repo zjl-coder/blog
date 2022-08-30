@@ -121,6 +121,10 @@ const front = {
           link: '/front/engineering/engineering.md',
         },
         {
+          text: '前端Leader的任务',
+          link: '/front/engineering/leader.md',
+        },
+        {
           text: '性能指标',
           link: '/front/engineering/performance.md',
         },
