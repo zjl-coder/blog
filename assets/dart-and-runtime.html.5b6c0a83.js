@@ -1,1 +1,0 @@
-const t=JSON.parse('{"key":"v-0e6c47c8","path":"/app/dart/dart-and-runtime.html","title":"dart\u548Cruntime(\u8FD0\u884C\u65F6)","lang":"zh-CN","frontmatter":{},"excerpt":"","headers":[],"git":{"updatedTime":1662271204000},"filePathRelative":"app/dart/dart-and-runtime.md"}');export{t as data};
