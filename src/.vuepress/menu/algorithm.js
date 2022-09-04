@@ -9,7 +9,11 @@ const algorithm = {
         {
           text: '字节跳动前端算法',
           link: '/algorithm/company/bytedance.md',
-        }
+        },
+        {
+          text: '平安IQ测试',
+          link: '/algorithm/company/pingan.md',
+        },
       ],
     },
     {
