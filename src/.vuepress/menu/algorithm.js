@@ -3,6 +3,16 @@ const algorithm = {
   link: '/algorithm/',
   children: [
     {
+      text: '公司面试算法',
+      link: '/algorithm/company',
+      children: [
+        {
+          text: '字节跳动前端算法',
+          link: '/algorithm/company/bytedance.md',
+        }
+      ],
+    },
+    {
       text: '排序算法',
       link: '/algorithm/sort.md',
     },

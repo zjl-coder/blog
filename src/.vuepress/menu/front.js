@@ -7,6 +7,10 @@ const front = {
       link: '/front/work'
     },
     {
+      text: '前端Leader的任务',
+      link: '/front/engineering/leader.md',
+    },
+    {
       text: 'js',
       link: '/front/js',
       children: [
@@ -119,10 +123,6 @@ const front = {
         {
           text: '前端工程化',
           link: '/front/engineering/engineering.md',
-        },
-        {
-          text: '前端Leader的任务',
-          link: '/front/engineering/leader.md',
         },
         {
           text: '性能指标',
