@@ -1,6 +1,20 @@
 <TitleList></TitleList>
 
 # promise执行流程
+让promise对象一直处于pending 状态即可
+```js
+function foo(){
+  return new Promise((resolve, reject)=>{
+    // 不执行 resolve 和 reject 
+  })
+}
+foo().then(()=>{console.log("这里将永远不会执行，一直处于pending状态")})
+```
+
+### 终止 promise
+
+### 终止 async await
+[async await 执行流程](./async.md)
 
 ### promise状态
 Promise对象代表一个异步操作，有三种状态：<Te d>pending（进行中）</Te>、<Te d>fulfilled（已成功）</Te>和<Te d>rejected（已失败）</Te>。  

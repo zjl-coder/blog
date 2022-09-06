@@ -39,6 +39,10 @@ const front = {
           link: '/front/js/promise.md',
         },
         {
+          text: 'async await 执行流程',
+          link: '/front/js/async.md',
+        },
+        {
           text: '柯里化与局部应用',
           link: '/front/js/curry-partial.md',
         },
