@@ -404,9 +404,121 @@ release-it
 
 
 ###### mockjs
-[mockjs 中文文档](http://mock.pe666.cn/)  
-[fakerjs 文档](https://fakerjs.dev/guide/)  
+[mockjs 中文文档](http://mock.pe666.cn/)快捷创建数据   
+[fakerjs 文档](https://fakerjs.dev/guide/)快捷创建数据    
 
-mockjs 和 fakerjs 可以快捷生成各种类型的数据  
+mockjs 和 fakerjs 可以快捷生成各种类型的数据   
 
-起一个node server 真实模拟 请求和响应  
+起一个node server 真实模拟 请求和响应    
+
+安装包  
+```bash
+npm i koa koa-body koa-router mockjs require-dir @faker-js/faker globby@11 ip
+```
+
+index.js 服务代码 支持 **多路由响应**模式 和 **单路由响应**模式(单路由通过参数来判断api)  
+```js
+const Koa = require('koa');
+const Router = require('koa-router');
+const koaBody = require('koa-body'); // 需要分析请求的 body 给 路由根据 参数 来调用控制器的模式使用
+const requireDir = require('require-dir'); // 将目录下的所有文件require成对象
+const globby = require('globby'); // 获取目录的所有子目录路径
+const ip = require('ip'); // 获取本地 ip
+
+// 配置
+const config = {
+  SERVER: {
+    host: ip.address(),
+    port: 3000,
+  },
+  single: true, // 单路由模式
+  method: 'post', // 请求类型
+  actionName: 'action', // 单路由下，参数里的api名称的key, 对应的value 将会映射到 xxx.js 或 xxx.json文件
+  apiDir: ['./data'], // 用作api的文件夹，api为 localhost:3000/data/xxx，支持多个跟目录
+};
+
+const app = new Koa();
+
+app.use(koaBody({ multipart: true, formidable: { maxFields: 5000 } }));
+
+const router = new Router();
+
+async function start() {
+  if (config.single) {
+    /**
+     * 单路由模式
+     * 请求的body携带有控制器参数，感觉控制器参数调用对应的控制器进行响应
+     * 路由对应目录路径，参数对应文件名，支持 js 或 json
+     */
+
+    // 只获取目录路径(文件夹)，不获取文件
+    const paths = await globby(config.apiDir, { onlyDirectories: true });
+    paths.forEach((path) => {
+      // 不递归获取文件
+      const dir = requireDir(path, { recurse: false });
+      // 判断文件夹下是否有文件
+      if (Object.keys(dir).length) {
+        // 有文件，就将目录注册成路由
+        router[config.method](`/${path}`, async (ctx) => {
+          let body = ctx.request.body;
+          if (config.method.toLocaleLowerCase() === 'get') {
+            body = ctx.request.query;
+          }
+          // 根据参数名获取对应的文件(不包含后缀)
+          ctx.body = dir[body[config.actionName]];
+        });
+      }
+    });
+  } else {
+    /**
+     * 多路由模式
+     * 不用管请求的body，根据路由调用控制器
+     * 路由path对应文件路径，支持 js 或 json
+     */
+
+    // 只获取文件路径
+    const paths = await globby(config.apiDir, { onlyFiles: true });
+    paths.forEach((path) => {
+      // 去掉文件后缀，注册成路由
+      const route = path.split('.')[0];
+      router[config.method](`/${route}`, async (ctx) => {
+        // 根据参数名获取对应的文件(不包含后缀)
+        ctx.body = require(`./${path}`);
+      });
+    });
+  }
+  app.use(router.routes()).use(router.allowedMethods());
+
+  app.listen(config.SERVER.port, () => {
+    console.log('\x1B[34m%s\x1B[0m', `Koa server listen on localhost:${config.SERVER.port}`);
+    console.log('\x1B[34m%s\x1B[0m', `Koa server listen on ${config.SERVER.host}:${config.SERVER.port}`);
+  });
+}
+
+start();
+
+```
+
+api 的 mock 数据即可放在对应的文件夹下，path 的 / 分割递归子目录，最后一个名称为文件  
+
+例如，以上代码形成的项目结构为  
+
+```bash
+|-- data
+|-- -- api
+|-- -- -- test
+|-- -- -- -- getdata.js [mock 数据]
+|-- -- -- -- getlist.json [mock 数据]
+|-- node_modules
+|-- index.js
+|-- package.json 
+``` 
+
+单路由模式下对应的api为
+
+- /data/api/test?action=getdata  
+- /data/api/test?action=getlist  
+
+多路由模式下对应的api为
+- /data/api/test/getdata  
+- /data/api/test/getlist
