@@ -360,3 +360,53 @@ conventional-changelog
 
 ### 自动生成变更日志
 release-it  
+
+### 前端MOCK
+
+[whistle 文档](http://wproxy.org/whistle/)  
+
+###### whistle常用配置
+- disable 对某些域名不拦截
+```bash
+## disable,对某些域名不拦截 一般放在 Default
+/oa.com/ disable://intercept
+/*.oa.com/ disable://intercept
+/*.woa.com/ disable://intercept
+/google.com/ disable://intercept
+/bmcx.com/ disable://intercept
+/github/ disable://intercept
+```
+![An image](./images/engineering4.png)
+- 代理本地开发文件  
+  便于正式环境抓包到本地开发调试
+![an images](./images/engineering7.png)
+- mock api
+  **whistle 不拦截 120.0.0.1，需要配置域名才能拦截**
+  ```bash
+  ## 配置一个域名指向本地的host
+  127.0.0.1:8300 qqqq.com
+  ```
+  - 本地文件写数据 (推荐 方便管理不同项目的mock 数据)
+  ```bash
+  ## 本地创建 /Users/abc/Desktop/userinfo.json 文件，匹配到 /tbaas/select?action=BindProject 时 将在响应 body 里面 返回 json 数据
+  /\/tbaas\/select\?action=BindProject/ resBody:///Users/abc/Desktop/userinfo.json resType://application/json resCharset://utf8 statusCode://200
+  ```
+  - Values 写数据 (不推荐，values 多了不好管理)
+  ```bash
+  ## 在 whistle 中创建 userinfo 为名的 value 进行 mock 数据
+  /\/tbaas\/overview\?action=DescribeEventSummary/ resBody://{userinfo} resType://application/json resCharset://utf8 statusCode://200
+  ```
+  ![an images](./images/engineering5.png)
+  - 在 Rules 中写数据(用的少，会增加代理路由文件的复杂度)
+  ![an images](./images/engineering6.png)
+- 修改头信息
+
+
+
+###### mockjs
+[mockjs 中文文档](http://mock.pe666.cn/)  
+[fakerjs 文档](https://fakerjs.dev/guide/)  
+
+mockjs 和 fakerjs 可以快捷生成各种类型的数据  
+
+起一个node server 真实模拟 请求和响应  
