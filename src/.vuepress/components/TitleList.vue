@@ -1,51 +1,51 @@
 <template>
   <div class="titlelist">
-    <a v-for="menu in list" :key="menu.innerText" :href="menu.hash" :class="{active: isActiveHash(menu.hash)}">
-      <component :is="menu.localName">{{menu.innerText.substring(2)}}</component>
+    <a v-for="menu in list" :key="menu.innerText" :href="menu.hash" :class="{ active: isActiveHash(menu.hash) }">
+      <component :is="menu.localName">{{ menu.innerText.substring(2) }}</component>
     </a>
   </div>
 </template>
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       list: [],
       hash: '',
-    }
+    };
   },
   watch: {
     $route: {
-      handler: function(val, oldVal){
+      handler: function (val, oldVal) {
         this.hash = val.hash.substring(1);
       },
       // 深度观察监听
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
-    isActiveHash(str){
+    isActiveHash(str) {
       return decodeURIComponent(str) === `#${this.hash}`;
-    }
+    },
   },
-  mounted(){
-    const node = []
-    for(let i = 2; i <=6; i++){
-      node.push(`div.theme-default-content h${i}`)
+  mounted() {
+    const node = [];
+    for (let i = 2; i <= 6; i++) {
+      node.push(`div.theme-default-content h${i}`);
     }
     const hlist = document.querySelectorAll(node.join(','));
     const menus = [];
     const length = hlist.length;
-    for(let i = 0; i < length; i++){
+    for (let i = 0; i < length; i++) {
       menus.push({
         localName: hlist[i].localName,
         innerText: hlist[i].innerText,
         hash: hlist[i].childNodes[0].hash,
-      })
+      });
     }
     this.list = menus;
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -65,8 +65,8 @@ const algorithm = {
           link: '/algorithm/leetcode/hard/3.md',
         },
       ],
-    }
+    },
   ],
 };
 
-module.exports = { algorithm }
+module.exports = { algorithm };

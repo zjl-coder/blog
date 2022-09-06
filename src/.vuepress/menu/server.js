@@ -21,8 +21,8 @@ const server = {
         {
           text: '理解node stream流',
           link: '/server/node/stream.md',
-        }
-      ]
+        },
+      ],
     },
     {
       text: 'nginx',
@@ -31,8 +31,8 @@ const server = {
         {
           text: '前端nginx知识',
           link: '/server/nginx/nginx.md',
-        }
-      ]
+        },
+      ],
     },
     {
       text: '系统',
@@ -41,8 +41,8 @@ const server = {
         {
           text: '进程和线程',
           link: '/server/system/process-thread.md',
-        }
-      ]
+        },
+      ],
     },
     {
       text: 'docker',
@@ -51,10 +51,10 @@ const server = {
         {
           text: 'docker shell 自动化脚本',
           link: '/server/docker/shell.md',
-        }
-      ]
-    }
-  ]
+        },
+      ],
+    },
+  ],
 };
 
-module.exports = { server }
+module.exports = { server };

@@ -7,7 +7,7 @@ const { registerComponentsPlugin } = require('@vuepress/plugin-register-componen
 const { mediumZoomPlugin } = require('@vuepress/plugin-medium-zoom');
 const { nprogressPlugin } = require('@vuepress/plugin-nprogress');
 const { sidebar } = require('./sidebar');
-const { navbar } = require('./navbar')
+const { navbar } = require('./navbar');
 
 module.exports = {
   lang: 'zh-CN',
@@ -51,6 +51,6 @@ module.exports = {
     mediumZoomPlugin({}),
     nprogressPlugin(),
   ],
-}
+};
 
 // __dirname  blog/src/.vuepress

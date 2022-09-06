@@ -39,9 +39,9 @@ export default {
         'background-color-success': this.s && this.b,
         'color-info': this.i,
         'background-color-info': this.i && this.b,
-      }
-    }
-  }
+      },
+    };
+  },
 };
 </script>
 

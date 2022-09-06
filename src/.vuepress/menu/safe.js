@@ -1,9 +1,7 @@
 const safe = {
   text: '前端安全',
   link: '/safe/',
-  children: [
-    
-  ],
+  children: [],
 };
 
-module.exports = { safe }
+module.exports = { safe };

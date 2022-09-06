@@ -4,7 +4,7 @@ const front = {
   children: [
     {
       text: '职业',
-      link: '/front/work'
+      link: '/front/work',
     },
     {
       text: '前端Leader的任务',
@@ -54,7 +54,7 @@ const front = {
           text: '*.d.ts全局类型声明',
           link: '/front/js/d-ts.md',
         },
-      ]
+      ],
     },
     {
       text: 'css',
@@ -85,8 +85,8 @@ const front = {
         {
           text: 'react渲染出0的问题',
           link: '/front/react/react-0.md',
-        }
-      ]
+        },
+      ],
     },
     {
       text: '工程',
@@ -110,11 +110,11 @@ const front = {
         },
         {
           text: 'AST抽象语法树',
-          link: '/front/engineering/ast.md'
+          link: '/front/engineering/ast.md',
         },
         {
           text: 'Babel基本知识',
-          link: '/front/engineering/babel.md'
+          link: '/front/engineering/babel.md',
         },
         {
           text: 'es6模块化代码转es5代码的模样',
@@ -135,10 +135,10 @@ const front = {
         {
           text: 'git常用命令',
           link: '/front/engineering/git.md',
-        }
-      ]
+        },
+      ],
     },
-  ]
-}
+  ],
+};
 
-module.exports = { front }
+module.exports = { front };

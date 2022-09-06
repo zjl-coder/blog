@@ -13,10 +13,10 @@ const network = {
         {
           text: 'HTTP教程',
           link: '/network/tcp/http.md',
-        }
-      ]
-    }
-  ]
+        },
+      ],
+    },
+  ],
 };
 
-module.exports = { network }
+module.exports = { network };

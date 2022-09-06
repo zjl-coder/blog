@@ -14,7 +14,7 @@ const navbar = [
         text: '网络',
         link: '/network/',
       },
-    ]
+    ],
   },
   {
     text: '零基础了解区块链原理',
@@ -22,7 +22,7 @@ const navbar = [
   },
   {
     text: '前端安全',
-    link: 'https://docs.qq.com/slide/DQXRyb0hSUG1ocVhU'
+    link: 'https://docs.qq.com/slide/DQXRyb0hSUG1ocVhU',
   },
   {
     text: '设计模式',
@@ -32,6 +32,6 @@ const navbar = [
     text: '算法',
     link: '/algorithm/',
   },
-]
+];
 
-module.exports = { navbar }
+module.exports = { navbar };
