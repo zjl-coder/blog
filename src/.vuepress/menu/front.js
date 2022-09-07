@@ -8,7 +8,7 @@ const front = {
     },
     {
       text: '前端Leader的任务',
-      link: '/front/engineering/leader.md',
+      link: '/front/work/leader.md',
     },
     {
       text: 'js',
