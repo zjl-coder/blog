@@ -32,6 +32,7 @@ module.exports = {
         },
       },
       maxSuggestions: 100,
+      hotKeys: [],
     }),
     backToTopPlugin(),
     externalLinkIconPlugin({

@@ -32,6 +32,10 @@ const navbar = [
     text: '算法',
     link: '/algorithm/',
   },
+  {
+    text: '工具',
+    link: '/tool.md',
+  },
 ];
 
 module.exports = { navbar };
