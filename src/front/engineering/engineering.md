@@ -364,7 +364,30 @@ release-it
 
 ### 前端MOCK
 
-[whistle 文档](http://wproxy.org/whistle/)  
+###### 常用的三种方式
+- whistle
+  - [whistle 文档](http://wproxy.org/whistle/)  
+  - 优点：
+    - mock数据
+    - 在线调试，将远程文件代理成本地文件
+    - 抓包
+  - 缺点：
+    - 后端人员可能不会使用，mock数据时，需要自己写
+- node server mock
+  - mockjs fakerjs
+  - 优点：
+    - mock 数据灵活
+    - 响应灵活
+    - 请求的真实感更强
+  - 缺点：
+    - 后端人员可能不会使用，mock数据时，需要自己写
+    - 数据不灵活
+- postman
+  - 优点：
+    - mock数据
+    - 后端人员可能知道导出一份完整的postman文件，前端不用自己mock数据
+  - 缺点
+    - 数据不灵活
 
 ###### whistle常用配置
 - disable 对某些域名不拦截
