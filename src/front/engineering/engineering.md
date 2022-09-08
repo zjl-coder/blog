@@ -247,7 +247,8 @@ githooks 保存在 .git 文件夹中
 
 `husky` 是一个让配置 git 钩子变得更简单的工具。支持所有的git钩子。
 
-husky 8.x 使用教程
+[husky 8.x 使用教程](https://typicode.github.io/husky/#/)  
+
 - 安装husky `npm install husky --save-dev`
 - 要在安装后自动启用钩子，我们需要执行`npm set-script prepare "husky install"`
 - 执行完上一步的命令之后可以在package.json 文件的scripts配置项中看到如下代码：
