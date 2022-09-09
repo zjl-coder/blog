@@ -2,5 +2,3 @@
 **书山有路勤为径 学海无涯苦作舟**  
 
 **吾生也有涯 而知也无涯 以有涯随无涯 殆已**  
-
-<Mind :src="$withBase('/images/test.md')" height="400px" />
