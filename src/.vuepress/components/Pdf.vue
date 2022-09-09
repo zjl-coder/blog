@@ -9,15 +9,15 @@
 export default {
   props: {
     src: {
-      type: Boolean,
+      type: String,
       default: '',
     },
     height: {
-      type: Boolean,
+      type: String,
       default: '700px',
     },
     width: {
-      type: Boolean,
+      type: String,
       default: '100%',
     },
   },
