@@ -20,9 +20,9 @@
     - `git clone --filter=blob:limit=1m git@gitlab.com:gitlab-com/www-gitlab-com.git` 克隆存储库 不包括大于 1 MB的文件 
   - 按对象类型筛选
     - `git clone --filter=blob:none --no-checkout git@gitlab.com:gitlab-com/www-gitlab-com.git`
-    - --filter=blob:none 不克隆 blob，但是仓库中的历史commit、tree会被下载
-    - --no-checkout 不自动检出
-    - --filter=tree:<depth> 比blob更省空间，但是treeless模式的克隆在开发的场景下会更加频繁的触发缺失对象的下载
+    - `--filter=blob:none` 不克隆 blob，但是仓库中的历史commit、tree会被下载
+    - `--no-checkout` 不自动检出
+    - `--filter=tree:<depth>` 比blob更省空间，但是treeless模式的克隆在开发的场景下会更加频繁的触发缺失对象的下载
 
 
 ### merge 与 rebase
