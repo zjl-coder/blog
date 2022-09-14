@@ -2,8 +2,28 @@
 
 # git常用命令
 
+[深入理解Git实现原理](https://zhuanlan.zhihu.com/p/45510461)  
+
 ### 常用git命令清单
-[常用git命令清单](https://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
+[常用git命令清单](https://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)  
+
+###### clone 克隆
+- 全量clone
+  - `git clone git@github.com:tancolo/MOOC.git`
+  - `git clone https://github.com/tancolo/MOOC.git`
+- 克隆单分支
+  - `git clone -b mvp-dev-more --single-branch git@github.com:tancolo/MOOC.git` 只克隆 **mvp-dev-more** 分支
+- 浅层克隆(克隆最近几次提交)
+  - `git clone --depth 10 git_仓库_url` 只会获取最近 xx（10条提交记录的）代码，默认是**master**分支， 如果想要指定分支，可以结合 **-b --single--branch** 使用！
+- 部分克隆(克隆时过滤)
+  - 按文件大小筛选
+    - `git clone --filter=blob:limit=1m git@gitlab.com:gitlab-com/www-gitlab-com.git` 克隆存储库 不包括大于 1 MB的文件 
+  - 按对象类型筛选
+    - `git clone --filter=blob:none --no-checkout git@gitlab.com:gitlab-com/www-gitlab-com.git`
+    - --filter=blob:none 不克隆 blob，但是仓库中的历史commit、tree会被下载
+    - --no-checkout 不自动检出
+    - --filter=tree:<depth> 比blob更省空间，但是treeless模式的克隆在开发的场景下会更加频繁的触发缺失对象的下载
+
 
 ### merge 与 rebase
 ![An image](./images/git8.jpg)
