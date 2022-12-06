@@ -76,6 +76,10 @@ const front = {
           text: 'rem移动端适配',
           link: '/front/css/rem.md',
         },
+        {
+          text: '动画函数区分',
+          link: '/front/css/animation.md',
+        },
       ],
     },
     {
@@ -129,8 +133,20 @@ const front = {
           link: '/front/engineering/engineering.md',
         },
         {
+          text: '前端错误监控',
+          link: '/front/engineering/error-monitor.md',
+        },
+        {
+          text: '前端性能监控',
+          link: '/front/engineering/performance-monitor.md',
+        },
+        {
           text: '性能指标',
           link: '/front/engineering/performance.md',
+        },
+        {
+          text: '前端优化方案',
+          link: '/front/engineering/optimize.md',
         },
         {
           text: '对web项目的思考',

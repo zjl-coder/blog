@@ -21,8 +21,17 @@ const navbar = [
     link: 'https://docs.qq.com/slide/DQWtRZW9OeGdPUlNI',
   },
   {
-    text: '前端安全',
-    link: 'https://docs.qq.com/slide/DQXRyb0hSUG1ocVhU',
+    text: '安全',
+    children: [
+      {
+        text: '前端安全ppt',
+        link: 'https://docs.qq.com/slide/DQXRyb0hSUG1ocVhU',
+      },
+      {
+        text: '前端安全',
+        link: '/safe/',
+      },
+    ],
   },
   {
     text: '设计模式',

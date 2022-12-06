@@ -66,6 +66,16 @@ const algorithm = {
         },
       ],
     },
+    {
+      text: '其他',
+      link: '/algorithm/others',
+      children: [
+        {
+          text: '求出和最大的连续子数组的下标',
+          link: '/algorithm/others/1.md'
+        },
+      ],
+    },
   ],
 };
 
