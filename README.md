@@ -39,7 +39,7 @@
 <Te b w>黄色背景文字</Te>
 ```
 - b 开启背景色
-- w warn 换色
+- w warn 黄色
 - s success 绿色
 - d danger 红色
 - i info 蓝色
