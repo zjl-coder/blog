@@ -16,6 +16,10 @@ const network = {
         },
       ],
     },
+    {
+      text: 'DNS解析过程',
+      link: '/network/dns.md'
+    },
   ],
 };
 
