@@ -58,6 +58,10 @@ const front = {
           text: '*.d.ts全局类型声明',
           link: '/front/js/d-ts.md',
         },
+        {
+          text: '跨端技术的本质与现状',
+          link: '/front/js/cross-terminal.md',
+        },
       ],
     },
     {

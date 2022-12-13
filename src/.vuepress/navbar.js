@@ -14,6 +14,10 @@ const navbar = [
         text: '网络',
         link: '/network/',
       },
+      {
+        text: '应用端',
+        link: '/app/',
+      },
     ],
   },
   {
