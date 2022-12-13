@@ -23,10 +23,22 @@ export default {
       type: String,
       default: '800px',
     },
+    scale: {
+      type: Boolean,
+      default: false
+    },
+    translate: {
+      type: Boolean,
+      default: false
+    },
+    showBorder: {
+      type: Boolean,
+      default: false
+    },
   },
   computed: {
     style() {
-      return `width: ${this.width}; height: ${this.height}; border: solid 1px #eee`;
+      return `width: ${this.width}; height: ${this.height}; ${this.showBorder ? 'border: solid 1px #eee' : ''}`;
     },
   },
   mounted() {
@@ -40,7 +52,10 @@ export default {
       const { styles, scripts } = transformer.getUsedAssets(features);
       if (styles) loadCSS(styles);
       if (scripts) loadJS(scripts, { getMarkmap: () => markmap });
-      Markmap.create(this.$refs.markmap, deriveOptions({}), root);
+      Markmap.create(this.$refs.markmap, deriveOptions({
+        zoom: this.scale,
+        pan: this.translate
+      }), root);
     });
   },
 };

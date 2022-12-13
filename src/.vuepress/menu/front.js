@@ -156,6 +156,10 @@ const front = {
           text: 'git常用命令',
           link: '/front/engineering/git.md',
         },
+        {
+          text: 'npm和yarn的危险行为',
+          link: '/front/engineering/npm-dangerous-act.md',
+        },
       ],
     },
   ],
