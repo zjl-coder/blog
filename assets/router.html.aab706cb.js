@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-73bf6654","path":"/server/node/router.html","title":"\u7406\u89E3node router\u8DEF\u7531\u4E2D\u95F4\u4EF6\u7684\u539F\u7406","lang":"zh-CN","frontmatter":{},"excerpt":"","headers":[],"git":{"updatedTime":1670932005000},"filePathRelative":"server/node/router.md"}');export{e as data};
