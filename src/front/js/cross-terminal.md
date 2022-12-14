@@ -8,6 +8,8 @@
 
 [React Native For Android 架构初探](https://zhuanlan.zhihu.com/p/20259704)
 
+[Flutter之原理解析](https://juejin.cn/post/6871608025325502478)
+
 ## 主流跨端实现方案
 
 #### h5 hybrid 方案
@@ -24,6 +26,22 @@
 
 ## 对比
 - hybrid跨端：webview充当了桥接层的角色
-- flutter：自渲染的引擎实现跨端，减少了native与js之间的桥，速度更快
+- flutter：自渲染的引擎实现跨端，通过 skia (c++实现的跨平台的引擎) 调用的系统API，没有了native与js之间的桥，所以性能要优于RN速度更快。由于存在 skia 中间层，所以性能上<Te d>只能无限接近</Te>纯原生，无法达到真正原生。
 
 ## 跨端小程序 
+###### 本质
+- 通过webview运行
+- 嵌入一些原生的功能和APP宿主的功能
+
+###### 跨端小程序原理
+- 使用react 得到 virtual dom（虚拟dom）,然后传给各平台小程序进行渲染。
+- 跨的是 UI 层
+- 都是使用JS运行
+###### 跨端小程序流程图
+![an image](./images/ct2.png)
+
+**<Te w>tips</Te>**: dsl 是 Domain Specific Language 的缩写，中文翻译为**领域特定语言**，react 的 UI 以及各平台的小程序 UI 写法都不相同。 各小程序的 UI 模版写法其实也是为了生成vdom, 所以可以通过 react dsl 生成符合 各小程序的规范的 vdom。  
+
+从流程图可以看出，跨端小程序需要经历需要经历**两次diff算法**，第一次是 react 自己的 diff 算法更新数据 和 vdom，然后将数据(变量数据和vdom)传给各小程序平台之后，小程序平台又会进行一次 diff 算法，所以 **性能比原生小程序低**。 (如果知道各小程序的 diff 规则，则可以避免第二次 diff，但是目前各小程序是黑盒开发，二次 diff 无法避免)。  
+
+**tips**：跨平台程序直接传 vdom 给各小程序平台，不需要将 react dsl vdom 转 小程序的dsl 再转小程序的 vdom。
