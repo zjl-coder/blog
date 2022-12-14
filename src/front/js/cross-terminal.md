@@ -24,9 +24,14 @@
 ###### react native 的执行流程
 ![an image](./images/ct1.png) 
 
+#### 框架层+自渲染引擎 flutter
+自渲染的引擎实现跨端，直接与显示器的交互事件通信，通过 skia (c++实现的跨平台的引擎) 调用的系统API，没有了native与js之间的桥，所以性能要优于RN速度更快。由于存在 skia 中间层，所以性能上<Te d>只能无限接近</Te>纯原生，无法达到真正原生
+
 ## 对比
 - hybrid跨端：webview充当了桥接层的角色
-- flutter：自渲染的引擎实现跨端，通过 skia (c++实现的跨平台的引擎) 调用的系统API，没有了native与js之间的桥，所以性能要优于RN速度更快。由于存在 skia 中间层，所以性能上<Te d>只能无限接近</Te>纯原生，无法达到真正原生。
+- **flutter** 事件流程：
+  - flutter 是 GPU -> Vsync 信号 -> dart -> Compositor 排版 -> Skia 渲染 -> GPU
+  - rn 则是 GPU  -> Vsync 信号 -> native -> 桥 -> js -> 桥 -> yoga 排版 -> native 渲染 -> GPU
 
 ## 跨端小程序 
 ###### 本质
