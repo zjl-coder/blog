@@ -164,6 +164,10 @@ const front = {
           text: 'npm和yarn的危险行为',
           link: '/front/engineering/npm-dangerous-act.md',
         },
+        {
+          text: '录屏与源码定位',
+          link: '/front/engineering/record.md',
+        },
       ],
     },
   ],
