@@ -98,6 +98,10 @@ const front = {
           text: 'react渲染出0的问题',
           link: '/front/react/react-0.md',
         },
+        {
+          text: '组件函数的闭包陷阱',
+          link: '/front/react/closure-trap.md',
+        },
       ],
     },
     {
