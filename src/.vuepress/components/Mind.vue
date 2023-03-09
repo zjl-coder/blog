@@ -25,15 +25,15 @@ export default {
     },
     scale: {
       type: Boolean,
-      default: false
+      default: false,
     },
     translate: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showBorder: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   computed: {
@@ -52,10 +52,14 @@ export default {
       const { styles, scripts } = transformer.getUsedAssets(features);
       if (styles) loadCSS(styles);
       if (scripts) loadJS(scripts, { getMarkmap: () => markmap });
-      Markmap.create(this.$refs.markmap, deriveOptions({
-        zoom: this.scale,
-        pan: this.translate
-      }), root);
+      Markmap.create(
+        this.$refs.markmap,
+        deriveOptions({
+          zoom: this.scale,
+          pan: this.translate,
+        }),
+        root,
+      );
     });
   },
 };

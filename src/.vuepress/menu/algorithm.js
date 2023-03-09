@@ -66,7 +66,7 @@ const algorithm = {
               text: '滑动窗口最大值',
               link: '/algorithm/leetcode/hard/11.md',
             },
-          ]
+          ],
         },
         {
           text: '其他',
@@ -75,7 +75,7 @@ const algorithm = {
               text: '接雨水',
               link: '/algorithm/leetcode/hard/3.md',
             },
-          ]
+          ],
         },
       ],
     },
@@ -85,7 +85,7 @@ const algorithm = {
       children: [
         {
           text: '求出和最大的连续子数组的下标',
-          link: '/algorithm/others/1.md'
+          link: '/algorithm/others/1.md',
         },
       ],
     },
