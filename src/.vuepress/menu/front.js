@@ -84,6 +84,10 @@ const front = {
           text: '动画函数区分',
           link: '/front/css/animation.md',
         },
+        {
+          text: 'inline-block 元素下移现象',
+          link: '/front/css/inline-block.md',
+        },
       ],
     },
     {
