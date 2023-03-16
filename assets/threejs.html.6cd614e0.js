@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-24a578ce","path":"/front/js/threejs.html","title":"three.js","lang":"zh-CN","frontmatter":{},"excerpt":"","headers":[{"level":3,"title":"\u7A0B\u5E8F\u7ED3\u6784","slug":"\u7A0B\u5E8F\u7ED3\u6784","children":[]}],"git":{"updatedTime":1678934329000},"filePathRelative":"front/js/threejs.md"}');export{e as data};
