@@ -54,6 +54,16 @@ const server = {
         },
       ],
     },
+    {
+      text: 'Kubernetes',
+      link: '/server/k8s/',
+      children: [
+        {
+          text: 'Kubernetes 架构',
+          link: '/server/k8s/index.md',
+        },
+      ],
+    },
   ],
 };
 
