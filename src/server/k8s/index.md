@@ -4,7 +4,7 @@
 
 ## 架构图
 
-<Office src="[http://可公开访问的远程文件地址](https://zjl-coder.github.io/blog/images/k8s.xlsx)" />
+<Office src="https://zjl-coder.github.io/blog/images/k8s.xlsx" />
 
 ## Kubernetes 组件
 
