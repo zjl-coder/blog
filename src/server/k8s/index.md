@@ -4,8 +4,8 @@
 
 ## 架构图
 
-<Office src="https://zjl-coder.github.io/blog/images/k8s.xlsx" />
-
+<!-- <Office src="https://zjl-coder.github.io/blog/images/k8s.xlsx" /> -->
+![an image](./image/k8s.jpg)
 ## Kubernetes 组件
 
 1. 节点: 物理机或虚拟机(VMware)
