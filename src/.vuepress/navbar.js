@@ -32,7 +32,7 @@ const navbar = [
         link: 'https://docs.qq.com/slide/DQXRyb0hSUG1ocVhU',
       },
       {
-        text: '前端安全',
+        text: '安全',
         link: '/safe/',
       },
     ],

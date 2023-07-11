@@ -1,10 +1,14 @@
 const safe = {
-  text: '前端安全',
+  text: '安全',
   link: '/safe/',
   children: [
     {
-      text: 'csv防注入',
+      text: '前端csv防注入',
       link: '/safe/csv.md',
+    },
+    {
+      text: '服务端安全',
+      link: '/safe/service.md',
     },
   ],
 };
