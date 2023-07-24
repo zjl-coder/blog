@@ -106,6 +106,10 @@ const front = {
           text: '组件函数的闭包陷阱',
           link: '/front/react/closure-trap.md',
         },
+        {
+          text: 'npm link导致react库存在多实例',
+          link: '/front/react/npm-link-bug.md',
+        },
       ],
     },
     {
