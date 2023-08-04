@@ -62,6 +62,10 @@ const front = {
           text: '跨端技术的本质与现状',
           link: '/front/js/cross-terminal.md',
         },
+        {
+          text: 'i18next',
+          link: '/front/js/i18next.md',
+        },
       ],
     },
     {

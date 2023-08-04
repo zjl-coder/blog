@@ -46,6 +46,10 @@ const navbar = [
     link: '/algorithm/',
   },
   {
+    text: '常用代码',
+    link: '/common_codes/',
+  },
+  {
     text: '工具',
     link: '/tool.md',
   },
