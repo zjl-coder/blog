@@ -15,10 +15,9 @@ export function stringSaveAsFile(data: string, fileName: string) {
 
 ## a标签下载
 ```ts
-export function stringSaveAsFile(url: string, filename: string) {
+export function downloadFromUrl(url: string) {
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = fileName;
   anchor.click();
 }
 ```
