@@ -85,7 +85,7 @@ export function base64SaveAsFile(base64Text: string, fileName: string) {
   const dataUrlprefix = 'data:application/octet-stream;base64,';
   const anchor = document.createElement('a');
   anchor.href = `${dataUrlprefix}${base64Text}`;;
-  link.download = fileName;
+  anchor.download = fileName;
   anchor.click();
 }
 ```
