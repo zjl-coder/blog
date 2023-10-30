@@ -5,6 +5,7 @@ const { safe } = require('./menu/safe');
 const { algorithm } = require('./menu/algorithm');
 const { app } = require('./menu/app');
 const { commonCodes } = require('./menu/common_codes');
+const { interviewQuestions } = require('./menu/interview_questions');
 
 // 前端组的左菜单在一起显示
 const frontGroup = [front, server, network, app];
@@ -17,6 +18,7 @@ const sidebar = {
   '/safe/': [safe],
   '/algorithm/': [algorithm],
   '/common_codes/': [commonCodes],
+  '/interview_questions/': [interviewQuestions],
 };
 
 module.exports = { sidebar };

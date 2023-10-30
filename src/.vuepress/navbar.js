@@ -1,6 +1,6 @@
 const navbar = [
   {
-    text: '前端',
+    text: '风雨夜航',
     children: [
       {
         text: '前端',
@@ -38,12 +38,21 @@ const navbar = [
     ],
   },
   {
-    text: '设计模式',
-    link: 'https://zjl-coder.github.io/design-pattern/',
-  },
-  {
-    text: '算法',
-    link: '/algorithm/',
+    text: '面试题',
+    children: [
+      {
+        text: '八股文',
+        link: '/interview_questions/',
+      },
+      {
+        text: '设计模式',
+        link: 'https://zjl-coder.github.io/design-pattern/',
+      },
+      {
+        text: '算法',
+        link: '/algorithm/',
+      },
+    ],
   },
   {
     text: '常用代码',
