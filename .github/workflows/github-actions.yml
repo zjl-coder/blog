@@ -1,0 +1,37 @@
+name: Build And Push gh-pages
+on: [push, workflow_dispatch]
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: install node and npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - run: git pull
+      - run: git branch
+      - run: npm install
+      - name: build docs
+        run: npm run build
+      - run: git checkout gh-pages
+      - run: git branch
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - name: push branch gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          folder: ./docs
+          branch: gh-pages
+          force: true
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+

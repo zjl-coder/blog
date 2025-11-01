@@ -1,0 +1,1 @@
+npx mr-pdf --initialDocURLs="http://127.0.0.1/:8080/blog" --contentSelector="main" --paginationSelector=".page-nav .next a" --excludeSelectors="header.navbar,aside.sidebar,footer.page-edit .edit-link,.global-ui,.page-nav" --coverImage="https://vuepress.vuejs.org/hero.png" --coverTitle="VuePress" --coverSub="Vue-powered Static Site Generator" --outputPDFFilename="mr-pdf.pdf"
